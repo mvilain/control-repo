@@ -19,8 +19,8 @@ Vagrant.configure("2") do |config|
       v.memory = 2048
     end
     puppet.vm.network "public_network", bridge: "en1: Ethernet 2", ip: "192.168.50.10"
-    puppet.vm.network "forwarded_port", guest: 80, host: 8000
-    puppet.vm.network "forwarded_port", guest: 8080, host: 8081
+    puppet.vm.network "forwarded_port", guest: 80, host: 8000, auto_correct: true
+    puppet.vm.network "forwarded_port", guest: 8080, host: 8080, auto_correct: true
     puppet.vm.hostname = "puppet.local"
     puppet.vm.box = "bento/ubuntu-16.04"
     puppet.vm.provision "shell", inline: PUPPETLABS_APT_SETUP
@@ -32,8 +32,8 @@ Vagrant.configure("2") do |config|
     puppet.vm.provision "shell", inline: %q(puppet apply -e "host {'elk.local': ip => '192.168.50.20'}")
   end
   config.vm.define "elk" do |elk|
-    elk.vm.network "forwarded_port", guest: 5601, host: 5601
     elk.vm.network "public_network", bridge: "en1: Ethernet 2", ip: "192.168.50.20"
+    elk.vm.network "forwarded_port", guest: 5601, host: 5601, auto_correct: true
     elk.vm.hostname = "elk.local"
     elk.vm.box = "bento/ubuntu-16.04"
     elk.vm.provision "shell", inline: PUPPETLABS_APT_SETUP
