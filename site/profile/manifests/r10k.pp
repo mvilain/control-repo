@@ -6,7 +6,7 @@ class profile::r10k {
     use_mcollective => false,
     enable_ssl      => false,
   }
-  class { 'r10k::webhook::config':
+  class { 'r10k::webhook':
     user  => 'root',
     group => 'root',
   }
