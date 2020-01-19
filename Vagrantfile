@@ -20,7 +20,7 @@ Vagrant.configure("2") do |config|
     end
     puppet.vm.network "public_network", bridge: "en1: Ethernet 2", ip: "192.168.50.10"
     puppet.vm.network "forwarded_port", guest: 80, host: 8000, auto_correct: true
-    puppet.vm.network "forwarded_port", guest: 8080, host: 8080, auto_correct: true
+    puppet.vm.network "forwarded_port", guest: 8088, host: 8088, auto_correct: true
     puppet.vm.hostname = "puppet.local"
     puppet.vm.box = "bento/ubuntu-16.04"
     puppet.vm.provision "shell", inline: PUPPETLABS_APT_SETUP
