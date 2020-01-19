@@ -3,7 +3,7 @@ Puppet control repo for Puppet Essentials Training
 
 https://www.linkedin.com/learning/puppet-essential-training
 
-# Setup master
+## Setup master
 
 ```
 sudo puppet module install puppet/r10k --modulepath=/etc/puppetlabs/code/modules/
@@ -21,7 +21,9 @@ chmod -R 0400 /etc/puppetlabs/puppet/eyaml/*.pem
 
 cp -a eyaml/*.pem /vagrant/
 ```
-on local system
+
+## Setup Local workstation
+
 ```
 mkdir ~/.eyaml
 cat <-CONFIG > ~/.eyaml/config.yaml
@@ -34,7 +36,28 @@ cp -v p*.pkcs7.pem ~/.eyaml/
 mkdir data
 cd data
 eyaml edit common.yaml
-# add 'secret_password: DEC(1)::PKCS7[whatEv3r]!' to file
+# add 'encrypted key/value pair with DEC(1)::PKCS7[whatEv3r]!' to file
 git add common.yaml
 git commit common.yaml -m 'added encrypted secret_password'
+# setup hiera.yaml in top of repo to use eyaml encryption
+```
+
+## Testing (on local workstation)
+
+sudo gem install puppet-lint
+sudo gem install rspec-puppet puppetlabs_spec_helper rspec-puppet-facts
+# download and install https://pm.puppet.com/cgi-bin/pdk_download.cgi?dist=osx&rel=10.13&arch=x86_64&ver=latest
+# cd control-repo/site
+pdk new module rspec_example
+# select the default values for the prompts, but specify the OS as Debian
+cp .sync.yml rspec_example/.sync.yml
+cd rspec_example/
+pdk update
+mv Rakefile Rakefile.tmp2
+echo "require 'bundler' # https://github.com/puppetlabs/pdk-templates/issues/139" > Rakefile.tmp1
+cat Rakefile.tmp[12] > Rakefile; rm Rakefile.tmp* # rake -T
+pdk new class rspec_example
+rake spec
+rake lint
+rake syntax
 ```
