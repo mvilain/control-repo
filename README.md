@@ -18,4 +18,6 @@ mv /etc/puppetlabs/puppet/keys /etc/puppetlabs/puppet/eyaml
 chown -R puppet:puppet /etc/puppetlabs/puppet/eyaml
 chmod -R 0500 /etc/puppetlabs/puppet/eyaml
 chmod -R 0400 /etc/puppetlabs/puppet/eyaml/*.pem
+
+cp -a eyaml/*.pem /vagrant/
 ```
