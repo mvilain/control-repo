@@ -7,7 +7,7 @@ https://www.linkedin.com/learning/puppet-essential-training
 
 ```
 sudo puppet module install puppet/r10k --modulepath=/etc/puppetlabs/code/modules/
-sudo puppet apply -e 'class {'r10k': remote => "https://github.com/mvilain/control-repo" }' \
+sudo puppet apply -e 'class {"r10k": remote => "https://github.com/mvilain/puppet-ess-control-repo" }' \
   --modulepath=/etc/puppetlabs/code/modules
 
 puppetserver gem install hiera-eyaml
@@ -42,12 +42,13 @@ git commit common.yaml -m 'added encrypted secret_password'
 # setup hiera.yaml in top of repo to use eyaml encryption
 ```
 
-## Testing (on local workstation)
+## Setup Testing on local workstation
 
+```
 sudo gem install puppet-lint
 sudo gem install rspec-puppet puppetlabs_spec_helper rspec-puppet-facts
 # download and install https://pm.puppet.com/cgi-bin/pdk_download.cgi?dist=osx&rel=10.13&arch=x86_64&ver=latest
-# cd control-repo/site
+# cd puppet-ess-control-repo/site
 pdk new module rspec_example
 # select the default values for the prompts, but specify the OS as Debian
 cp .sync.yml rspec_example/.sync.yml
@@ -60,17 +61,25 @@ pdk new class rspec_example
 rake spec
 rake lint
 rake syntax
+```
 
-## ELK (on local workstation in control-repo)
+## ELK (on local workstation in puppet-ess-control-repo
 
-cd control-repo/site
+```
+cd puppet-ess-control-repo/site
 pdk new module elk
-cp .sync.yml elk/.sync.yml
+cp .sync.yml elk/
 cd elk
 pdk update
-mv Rakefile Rakefile.tmp2
 echo "require 'bundler' # https://github.com/puppetlabs/pdk-templates/issues/139" > Rakefile.tmp1
-cat Rakefile.tmp[12] > Rakefile; rm Rakefile.tmp* # rake -T
+mv Rakefile Rakefile.tmp2
+cat Rakefile.tmp[12] > Rakefile; rm Rakefile.tmp* ; rake -T
+pdk new class elk; rspec
+git init
+git add .
+git commit -a -m "init elk module"
+cd ../..
+
 git submodule add git@github.com:mvilain/control-repo.git elk
 git submodule init
 git add .

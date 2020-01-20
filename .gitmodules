@@ -1,0 +1,3 @@
+[submodule "site/elk"]
+	path = site/elk
+	url = git@github.com:mvilain/puppet-ess-control-repo-elk.git
