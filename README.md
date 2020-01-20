@@ -103,6 +103,4 @@ git subtree add --prefix site/elk/ git@github.com:mvilain/puppet-ess-control-rep
 # link github repos; go to puppet-ess-elk repo;
 # select *More Options*>*Trigger Build*>*Trigger Custom Build*
 
-cd control-repo
-git submodule update --remote
 ```
