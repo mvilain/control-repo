@@ -81,5 +81,4 @@ git push --set-upstream origin master
 # link github repos; go to puppet-ess-elk repo;
 # select *More Options*>*Trigger Build*>*Trigger Custom Build*
 
-
 ```
