@@ -68,20 +68,27 @@ rake syntax
 ```
 cd puppet-ess-control-repo/site
 pdk new module elk
+
 cp .sync.yml elk/
 cd elk
-pdk update
+pdk update --force
+
 echo "require 'bundler' # https://github.com/puppetlabs/pdk-templates/issues/139" > Rakefile.tmp1
 mv Rakefile Rakefile.tmp2
 cat Rakefile.tmp[12] > Rakefile; rm Rakefile.tmp* ; rake -T
 pdk new class elk; rspec
+
+# create  git@github.com:mvilain/puppet-ess-control-repo-elk.git on github
 git init
 git add .
 git commit -a -m "init elk module"
 git remote add origin git@github.com:mvilain/puppet-ess-control-repo-elk.git
 git push --set-upstream origin master
+
+# r10k doesn't use submodules; instead: https://www.atlassian.com/git/tutorials/git-subtree 
 cd ../..
-git submodule add git@github.com:mvilain/puppet-ess-control-repo-elk.git site/elk
+mv site/elk site/elk.git
+git subtree add --prefix site/elk/ git@github.com:mvilain/puppet-ess-control-repo-elk.git production
 
 # go to https://travis-ci.org/ in browser and sign in with Github account
 # link github repos; go to puppet-ess-elk repo;
