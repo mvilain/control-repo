@@ -63,7 +63,7 @@ rake lint
 rake syntax
 ```
 
-## ELK (on local workstation in puppet-ess-control-repo
+## ELK (on local workstation in puppet-ess-control-repo)
 
 ```
 cd puppet-ess-control-repo/site
@@ -85,10 +85,19 @@ git commit -a -m "init elk module"
 git remote add origin git@github.com:mvilain/puppet-ess-control-repo-elk.git
 git push --set-upstream origin master
 
-# r10k doesn't use submodules; instead: https://www.atlassian.com/git/tutorials/git-subtree 
+# r10k doesn't use submodules; instead (must do manual add/pull on puppet master) 
+# https://www.atlassian.com/git/tutorials/git-subtree 
+# https://github.com/git/git/blob/master/contrib/subtree/git-subtree.txt
 cd ../..
 mv site/elk site/elk.git
-git subtree add --prefix site/elk/ git@github.com:mvilain/puppet-ess-control-repo-elk.git production
+git subtree add --prefix site/elk/ git@github.com:mvilain/puppet-ess-control-repo-elk.git master
+rm site/elk.git
+```
+
+## ELK cont'd (on puppet master)
+```
+cd /etc/puppetlabs/code/environments/production
+git subtree add --prefix site/elk/ git@github.com:mvilain/puppet-ess-control-repo-elk.git master
 
 # go to https://travis-ci.org/ in browser and sign in with Github account
 # link github repos; go to puppet-ess-elk repo;
