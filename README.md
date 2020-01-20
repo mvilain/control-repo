@@ -60,4 +60,26 @@ pdk new class rspec_example
 rake spec
 rake lint
 rake syntax
+
+## ELK (on local workstation in control-repo)
+
+cd control-repo/site
+pdk new module elk
+cp .sync.yml elk/.sync.yml
+cd elk
+pdk update
+mv Rakefile Rakefile.tmp2
+echo "require 'bundler' # https://github.com/puppetlabs/pdk-templates/issues/139" > Rakefile.tmp1
+cat Rakefile.tmp[12] > Rakefile; rm Rakefile.tmp* # rake -T
+git init
+git add .
+git commit -a -m 'initialize elk module commit'
+git remote add origin git@github.com:mvilain/puppet-ess-elk.git
+git push --set-upstream origin master
+
+# go to https://travis-ci.org/ in browser and sign in with Github account
+# link github repos; go to puppet-ess-elk repo;
+# select *More Options*>*Trigger Build*>*Trigger Custom Build*
+
+
 ```
