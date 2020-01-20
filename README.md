@@ -78,14 +78,11 @@ pdk new class elk; rspec
 git init
 git add .
 git commit -a -m "init elk module"
-cd ../..
-
-git submodule add git@github.com:mvilain/control-repo.git elk
-git submodule init
-git add .
-git commit -a -m 'initialize elk module commit'
-git remote add origin git@github.com:mvilain/puppet-ess-elk.git
+git remote add origin git@github.com:mvilain/puppet-ess-control-repo-elk.git
 git push --set-upstream origin master
+cd ../..
+git submodule add git@github.com:mvilain/puppet-ess-control-repo-elk.git site/elk
+
 # go to https://travis-ci.org/ in browser and sign in with Github account
 # link github repos; go to puppet-ess-elk repo;
 # select *More Options*>*Trigger Build*>*Trigger Custom Build*
