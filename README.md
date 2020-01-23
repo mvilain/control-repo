@@ -3,11 +3,12 @@ Puppet control repo for Puppet Essentials Training
 
 https://www.linkedin.com/learning/puppet-essential-training
 
-## Setup master
+## Setup master in virtualbox puppet instance
 
 ```
-sudo puppet module install puppet/r10k --modulepath=/etc/puppetlabs/code/modules/
-sudo puppet apply -e 'class {"r10k": remote => "https://github.com/mvilain/puppet-ess-control-repo" }' \
+sudo -s
+puppet module install puppet/r10k --modulepath=/etc/puppetlabs/code/modules/
+puppet apply -e 'class {"r10k": remote => "https://github.com/mvilain/puppet-ess-control-repo" }' \
   --modulepath=/etc/puppetlabs/code/modules
 
 puppetserver gem install hiera-eyaml
@@ -19,12 +20,22 @@ chown -R puppet:puppet /etc/puppetlabs/puppet/eyaml
 chmod -R 0500 /etc/puppetlabs/puppet/eyaml
 chmod -R 0400 /etc/puppetlabs/puppet/eyaml/*.pem
 
-cp -a eyaml/*.pem /vagrant/
+cp -av eyaml/*.pem /vagrant/
+r10k deploy environments -pv
+puppet agent -t
+lsof -i TCP -P
+# in another window, run ngrok and paste the URL into the repo's webhook page
 ```
 
 ## Setup Local workstation
 
 ```
+# install rbenv either with brew or ports
+# add 'eval "$(rbenv init -)"' to ~/.bash_profile
+curl -fsSL https://github.com/rbenv/rbenv-installer/raw/master/bin/rbenv-doctor | bash
+gem install bundler
+bundle config set specific_platform true
+
 mkdir ~/.eyaml
 cat <-CONFIG > ~/.eyaml/config.yaml
 ---
@@ -45,8 +56,8 @@ git commit common.yaml -m 'added encrypted secret_password'
 ## Setup Testing on local workstation
 
 ```
-sudo gem install puppet-lint
-sudo gem install rspec-puppet puppetlabs_spec_helper rspec-puppet-facts
+gem install puppet-lint
+gem install rspec-puppet puppetlabs_spec_helper rspec-puppet-facts
 # download and install https://pm.puppet.com/cgi-bin/pdk_download.cgi?dist=osx&rel=10.13&arch=x86_64&ver=latest
 # cd puppet-ess-control-repo/site
 pdk new module rspec_example
@@ -63,7 +74,7 @@ rake lint
 rake syntax
 ```
 
-## ELK (on local workstation in puppet-ess-control-repo)
+## ELK Travis-CI testing (on local workstation in puppet-ess-control-repo)
 
 ```
 cd puppet-ess-control-repo/site
@@ -86,6 +97,7 @@ git remote add origin git@github.com:mvilain/puppet-ess-control-repo-elk.git
 git push --set-upstream origin master
 
 # r10k doesn't use submodules; instead 
+# https://codewinsarguments.co/2016/05/01/git-submodules-vs-git-subtrees/
 # https://github.com/git/git/blob/master/contrib/subtree/git-subtree.txt
 cd ../..
 mv site/elk site/elk.git
@@ -95,5 +107,24 @@ rm site/elk.git
 # go to https://travis-ci.org/ in browser and sign in with Github account
 # link github repos; go to puppet-ess-elk repo;
 # select *More Options*>*Trigger Build*>*Trigger Custom Build*
+```
+
+## ELK Beaker testing (on local workstation in puppet-ess-control-repo)
+
+```
+cd puppet-ess-control-repo/site/elk
+# edit elk Gemfile to add
+## group :acceptance do
+##  gem "beaker-rspec"
+##  gem "beaker-vagrant"
+## end
+
+bundle install
+mkdir -p spec/acceptance/nodesets spec/acceptance/classes
+# vim spec/acceptance/nodesets/default.yml # from puppetforge's apache module
+# vim spec/spec_helper_acceptance.rb # use version in code files
+# vim spec/acceptance/classes/elk_spec.rb
+bundle exec rake beaker
+
 
 ```
