@@ -1,1 +1,1 @@
-mod 'puppet/apache'
+mod 'puppetlabs-apache'
