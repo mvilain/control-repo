@@ -6,6 +6,10 @@
 #
 # @example
 #   include elk
+class { 'elastic_stack::repo':
+  oss => true,
+}
+
 class elk {
   class {'logstash':}
   logstash::plugin {'logstash-input-beats':}
