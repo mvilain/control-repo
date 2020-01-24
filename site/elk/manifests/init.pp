@@ -16,10 +16,6 @@ class elk {
 
 
   include ::java
-  class { 'elastic_stack::repo':
-    oss => true,
-  }
-
   class { 'elasticsearch':
     jvm_options  => ['-Xms256m','-Xmx256m'],
     status       => enabled,
