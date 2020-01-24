@@ -16,11 +16,15 @@ class elk {
 
 
   include ::java
+  class { 'elastic_stack::repo':
+    oss => true,
+  }
+
   class { 'elasticsearch':
     jvm_options  => ['-Xms256m','-Xmx256m'],
     status       => enabled,
     ensure       => present,
-    version      => '6.0.0'
+    oss          => true,
   }
   elasticsearch::instance { 'es-01': }
 
