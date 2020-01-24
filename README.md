@@ -151,5 +151,8 @@ bundle exec rake beaker
 
 ```
 add 'mod 'elastic-kibana', '6.3.1'' to Puppetfile with dependencies
+#add site/elk/manifests/init.pp
+#add site/elk/files/filebeats.conf
+git subtree push -P site/elk git@github.com:mvilain/puppet-ess-control-repo-elk.git master
 
 ```
