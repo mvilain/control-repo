@@ -21,13 +21,10 @@ class elk {
   }
 
   class { 'elasticsearch':
-    version => '6.4.2',
-  }
-  class { 'elasticsearch':
     jvm_options  => ['-Xms256m','-Xmx256m'],
     status       => enabled,
     ensure       => present,
-    oss          => true,
+    version      => '6.4.2',
   }
   elasticsearch::instance { 'es-01': }
 
