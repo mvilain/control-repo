@@ -3,10 +3,16 @@ Puppet control repo for Puppet Essentials Training
 
 https://www.linkedin.com/learning/puppet-essential-training
 
-## Setup master in virtualbox puppet instance
+## Setup puppet master in virtualbox puppet instance
 
 ```
+cd puppet-ess  # this is where ngrok and ssh.tar are
+vagrant up # wait for puppet and elk boxes to start
+vagrant ssh vagrant # ssh into runn puppet master's box
 sudo -s
+cd /root
+tar -xvzf /vagrant/ssh.tar.gz
+
 puppet module install puppet/r10k --modulepath=/etc/puppetlabs/code/modules/
 puppet apply -e 'class {"r10k": remote => "https://github.com/mvilain/puppet-ess-control-repo" }' \
   --modulepath=/etc/puppetlabs/code/modules
@@ -20,11 +26,18 @@ chown -R puppet:puppet /etc/puppetlabs/puppet/eyaml
 chmod -R 0500 /etc/puppetlabs/puppet/eyaml
 chmod -R 0400 /etc/puppetlabs/puppet/eyaml/*.pem
 
-cp -av eyaml/*.pem /vagrant/
-r10k deploy environments -pv
+rm -f /vagrant/p*.pkcs7.pem && cp -av eyaml/*.pem /vagrant/
+r10k deploy environment -pv
 puppet agent -t
 lsof -i TCP -P
-# in another window, run ngrok and paste the URL into the repo's webhook page
+# run ngrok and paste the URL into the repo's webhook
+#    http://puppet:puppet@NGROK_URL/payload
+# in another window
+cd puppet-ess
+vagrant ssh vagrant
+sudo -s
+cd /etc/puppetlabs/code/environments/production
+
 ```
 
 ## Setup Local workstation
@@ -53,9 +66,16 @@ git commit common.yaml -m 'added encrypted secret_password'
 # setup hiera.yaml in top of repo to use eyaml encryption
 ```
 
+## Setup webhook on github
+
+```
+cd
+```
+
 ## Setup Testing on local workstation
 
 ```
+
 gem install puppet-lint
 gem install rspec-puppet puppetlabs_spec_helper rspec-puppet-facts
 # download and install https://pm.puppet.com/cgi-bin/pdk_download.cgi?dist=osx&rel=10.13&arch=x86_64&ver=latest
@@ -109,7 +129,7 @@ rm site/elk.git
 # select *More Options*>*Trigger Build*>*Trigger Custom Build*
 ```
 
-## ELK Beaker testing (on local workstation in puppet-ess-control-repo)
+## ELK Beaker testing (broken) (on local workstation in puppet-ess-control-repo)
 
 ```
 cd puppet-ess-control-repo/site/elk
@@ -125,6 +145,11 @@ mkdir -p spec/acceptance/nodesets spec/acceptance/classes
 # vim spec/spec_helper_acceptance.rb # use version in code files
 # vim spec/acceptance/classes/elk_spec.rb
 bundle exec rake beaker
+```
 
+## ELK Module
+
+```
+add 'mod 'elastic-kibana', '6.3.1'' to Puppetfile with dependencies
 
 ```
