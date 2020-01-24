@@ -6,9 +6,6 @@
 #
 # @example
 #   include elk
-class { 'elastic_stack::repo':
-  oss => true,
-}
 
 class elk {
   class {'logstash':}
@@ -20,12 +17,13 @@ class elk {
 
   include ::java
   class { 'elasticsearch':
-    jvm_options => ['-Xms256m','-Xmx256m'],
-    status      => enabled,
-    ensure      => present,
+    jvm_options  => ['-Xms256m','-Xmx256m'],
+    status       => enabled,
+    ensure       => present,
+    version      => '6.0.0'
   }
   elasticsearch::instance { 'es-01': }
-  
+
 
   class {'kibana': 
     config => {
