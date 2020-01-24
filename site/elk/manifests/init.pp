@@ -18,7 +18,7 @@ class elk {
   class { 'elasticsearch':
     jvm_options => ['-Xms256m','-Xmx256m'],
     status      => enabled,
-    ensure      => running,
+    ensure      => present,
   }
   elasticsearch::instance { 'es-01': }
   
