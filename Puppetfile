@@ -15,3 +15,5 @@ mod 'puppetlabs-yumrepo_core', '1.0.6'
 
 mod 'elastic-elasticsearch', '6.4.0'
 mod 'richardc-datacat', '0.6.2'
+
+mod 'elastic-logstash', '6.1.5'
