@@ -9,3 +9,8 @@ node 'puppet.local' {
   }
 
 }
+
+node 'elk.local' {
+	include role::elk
+
+}
