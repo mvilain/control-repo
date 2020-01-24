@@ -1,6 +1,6 @@
 mod 'elastic-kibana', '6.3.1'
 
-mod 'elastic/elastic_stack', '7.0.0.'
+mod 'elastic/elastic_stack', '7.0.0'
 
 mod 'puppetlabs-apt', '7.3.0'
 mod 'puppetlabs-stdlib', '6.2.0'
