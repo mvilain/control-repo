@@ -6,15 +6,15 @@
 #   include elk::filebeat
 class elk::filebeat {
 
-	include elastic_stack::repo
+  include elastic_stack::repo
 
-	package{'filebeat':
-		ensure => present,
-	}
+  package{'filebeat':
+    ensure => present,
+  }
 
-	service{'filebeat':
-		enable  => true,
-		ensure  => running,
-		require => Package['filebeat'],
-	}
+  service{'filebeat':
+    enable  => true,
+    ensure  => running,
+    require => Package['filebeat'],
+  }
 }
