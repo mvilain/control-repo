@@ -17,17 +17,17 @@ class elk {
 
   include ::java
   class { 'elasticsearch':
-    jvm_options  => ['-Xms256m','-Xmx256m'],
-    status       => enabled,
-    ensure       => present,
-    version      => '6.4.2',
+    jvm_options => ['-Xms256m','-Xmx256m'],
+    status      => enabled,
+    ensure      => present,
+    version     => '6.4.2',
   }
   elasticsearch::instance { 'es-01': }
 
 
-  class {'kibana': 
+  class {'kibana':
     config => {
-      'server.host' => '0.0.0.0'
+      'server.host' => '0.0.0.0',
     }
   }
 

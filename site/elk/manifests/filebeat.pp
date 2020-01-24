@@ -13,8 +13,8 @@ class elk::filebeat {
   }
 
   service{'filebeat':
-    enable  => true,
     ensure  => running,
+    enable  => true,
     require => Package['filebeat'],
   }
 }
