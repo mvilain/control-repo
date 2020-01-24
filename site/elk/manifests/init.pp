@@ -16,11 +16,8 @@ class elk {
 
   include ::java
   class { 'elasticsearch':
-		jvm_options => [
-			'-Xms4g',
-			'-Xmx4g'
-  ]
-}
+    jvm_options => [ '-Xms256m', '-Xmx256m' ],
+  }
   elasticsearch::instance { 'es-01': }
 
   class {'kibana':
