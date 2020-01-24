@@ -147,12 +147,52 @@ mkdir -p spec/acceptance/nodesets spec/acceptance/classes
 bundle exec rake beaker
 ```
 
-## ELK Module
+## ELK Module (on local workstation)
 
 ```
 add 'mod 'elastic-kibana', '6.3.1'' to Puppetfile with dependencies
 #add site/elk/manifests/init.pp
 #add site/elk/files/filebeats.conf
 git subtree push -P site/elk git@github.com:mvilain/puppet-ess-control-repo-elk.git master
+```
+
+## ELK vagrant instance
+
+```
+vagrant ssh elk
+sudo puppet agent -t # generate a key to sign
+exit
+
+# go to puppet server
+vagrant ssh puppet
+sudo puppetserver ca sign --all
+
+# https://github.com/elastic/puppet-elasticsearch/issues/982
+sudo r10k deploy environment -pv
+puppet generate types --environment production
+exit
+
+# go back ELK vagrant instance
+sudo puppet agent -t
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ```

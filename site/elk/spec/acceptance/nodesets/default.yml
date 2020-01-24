@@ -1,0 +1,13 @@
+---
+HOSTS:
+  debian-8-x64:
+    roles:
+      - agent
+      - default
+    platform: debian-8-amd64
+    hypervisor: vagrant
+    vagrant_memsize: 4096
+    box: puppetlabs/debian-8.2-64-nocm
+CONFIG:
+  type: foss
+  consoleport: 443
