@@ -13,7 +13,7 @@ mod 'puppetlabs-concat', '6.2.0'
 
 mod 'puppetlabs-yumrepo_core', '1.0.6'
 
-#mod 'elastic-kibana', '6.0.1'
+# mod 'elastic-kibana', '6.0.1'
 mod 'elastic-kibana', '6.3.1'
 mod 'elastic-elastic_stack', '6.0.2'
 
