@@ -15,7 +15,7 @@ mod 'puppetlabs-yumrepo_core', '1.0.6'
 
 # mod 'elastic-kibana', '6.0.1'
 mod 'elastic-kibana', '6.3.1'
-mod 'elastic-elastic_stack', '6.5.3'
+mod 'elastic-elastic_stack', '6.7.0'
 
 mod 'elastic-elasticsearch', '6.2.2'
 mod 'richardc-datacat', '0.6.2'
