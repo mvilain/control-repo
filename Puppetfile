@@ -10,8 +10,7 @@ mod 'puppetlabs-concat', '6.2.0'
 
 mod 'puppetlabs-yumrepo_core', '1.0.6'
 
-#mod 'elastic-elasticsearch', '6.2.2'
-mod 'elastic-elasticsearch'
+mod 'elastic-elasticsearch', '6.2.2'
 mod 'richardc-datacat', '0.6.2'
 
 mod 'elastic-logstash', '6.0.2'
