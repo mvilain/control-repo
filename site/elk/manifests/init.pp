@@ -24,7 +24,8 @@ class elk {
     jvm_options => ['-Xms256m','-Xmx256m'],
     status      => enabled,
     ensure      => present,
-    version     => '6.8.4',
+    package_url => "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.2.4.deb",
+#    version     => '6.2.4',
   }
   elasticsearch::instance { 'es-01': }
 
