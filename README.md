@@ -10,8 +10,8 @@ cd puppet-ess  # this is where ngrok and ssh.tar are
 vagrant up # wait for puppet and elk boxes to start
 vagrant ssh puppet # ssh into run puppet master's box
 sudo -s
-apt update
-apt upgrade -y
+#apt-get update
+#apt-get upgrade -y
 cd /root
 tar -xvzf /vagrant/ssh.tar.gz
 unzip /vagrant/ngrok-stable-linux-amd64.zip
