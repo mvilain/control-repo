@@ -22,9 +22,9 @@ class elk {
   -> logstash::plugin{'logstash-input-beats':
   }
   -> logstash::configfile{'beats':
-    source => 'puppet:///modules/elk/beats.conf',
+    source  => 'puppet:///modules/elk/beats.conf',
+    require => Package['filebeats'],
   }
-  include elk::filebeat
 
 # V7 elastic search doesn't work here, so install 6.2.4
   class { 'elasticsearch':
@@ -44,4 +44,5 @@ class elk {
     }
   }
 
+  include elk::filebeat
 }
