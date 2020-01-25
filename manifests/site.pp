@@ -6,7 +6,7 @@ node 'puppet.local' {
 #	owner   => 'root',
 #	group   => 'root',
 #	mode    => '0600',
-  }
+#  }
 
 }
 
