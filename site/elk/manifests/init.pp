@@ -12,13 +12,13 @@ class elk {
   include ::java
 
   file {'/etc/default/logstash':
-    ensure => present,
-    source => 'puppet:///modules/elk/etc-default-logstash',
+    ensure  => present,
+    #source  => 'puppet:///modules/elk/etc-default-logstash',
+    require => Package['filebeat'],
   }
   -> class {'logstash':
     ensure      => present,
     package_url => 'https://artifacts.elastic.co/downloads/logstash/logstash-6.2.3.deb',
-    require     => Package['filebeat'],
   }
   -> logstash::plugin{'logstash-input-beats':
   }
