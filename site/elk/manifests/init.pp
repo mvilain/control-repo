@@ -15,6 +15,9 @@ class elk {
     ensure => present,
     source => 'puppet:///modules/elk/etc-default-logstash',
   }
+  -> package { 'filebeats':
+    ensure => present,
+  }
   -> class {'logstash':
     ensure      => present,
     package_url => 'https://artifacts.elastic.co/downloads/logstash/logstash-6.2.3.deb',
@@ -23,7 +26,6 @@ class elk {
   }
   -> logstash::configfile{'beats':
     source  => 'puppet:///modules/elk/beats.conf',
-    require => Package['filebeats'],
   }
 
 # V7 elastic search doesn't work here, so install 6.2.4
