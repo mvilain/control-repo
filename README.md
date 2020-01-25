@@ -8,10 +8,13 @@ https://www.linkedin.com/learning/puppet-essential-training
 ```
 cd puppet-ess  # this is where ngrok and ssh.tar are
 vagrant up # wait for puppet and elk boxes to start
-vagrant ssh vagrant # ssh into runn puppet master's box
+vagrant ssh puppet # ssh into run puppet master's box
 sudo -s
+apt update
+apt upgrade -y
 cd /root
 tar -xvzf /vagrant/ssh.tar.gz
+unzip /vagrant/ngrok-stable-linux-amd64.zip
 
 # install volpopluli r10k module
 puppet module install puppet/r10k --modulepath=/etc/puppetlabs/code/modules/
@@ -28,8 +31,10 @@ cp -v /vagrant/p*.pkcs7.pem /etc/puppetlabs/puppet/eyaml
 chown -R puppet:puppet /etc/puppetlabs/puppet/eyaml
 chmod -R 0500 /etc/puppetlabs/puppet/eyaml
 chmod -R 0400 /etc/puppetlabs/puppet/eyaml/*.pem
+ls -lah /etc/puppetlabs/puppet/eyaml
 #rm -f /vagrant/p*.pkcs7.pem && cp -av eyaml/*.pem /vagrant/
 
+# deploy control-repo code and run server
 r10k deploy environment -pv
 puppet agent -t
 lsof -i TCP -P
