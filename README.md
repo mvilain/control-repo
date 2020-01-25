@@ -20,13 +20,16 @@ puppet apply -e 'class {"r10k": remote => "https://github.com/mvilain/puppet-ess
 puppetserver gem install hiera-eyaml
 gem install hiera-eyaml
 cd /etc/puppetlabs/puppet
-eyaml createkeys
-mv /etc/puppetlabs/puppet/keys /etc/puppetlabs/puppet/eyaml
+#eyaml createkeys
+#mv /etc/puppetlabs/puppet/keys /etc/puppetlabs/puppet/eyaml
+
+mkdir /etc/puppetlabs/puppet/eyaml
+cp -v /vagrant/p*.pkcs7.pem eyaml/*.pem
 chown -R puppet:puppet /etc/puppetlabs/puppet/eyaml
 chmod -R 0500 /etc/puppetlabs/puppet/eyaml
 chmod -R 0400 /etc/puppetlabs/puppet/eyaml/*.pem
 
-rm -f /vagrant/p*.pkcs7.pem && cp -av eyaml/*.pem /vagrant/
+#rm -f /vagrant/p*.pkcs7.pem && cp -av eyaml/*.pem /vagrant/
 r10k deploy environment -pv
 puppet agent -t
 lsof -i TCP -P
