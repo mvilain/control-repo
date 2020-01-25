@@ -24,7 +24,7 @@ class elk {
     jvm_options => ['-Xms256m','-Xmx256m'],
     status      => enabled,
     ensure      => present,
-    version     => '6.8.4',
+#    version     => '6.8.4',
   }
   elasticsearch::instance { 'es-01': }
 
