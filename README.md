@@ -38,7 +38,9 @@ ls -lah /etc/puppetlabs/puppet/eyaml
 r10k deploy environment -pv
 puppet agent -t
 lsof -i TCP -P
+
 # run ngrok and paste the URL into the repo's webhook
+/root/ngrok http 8088
 #    http://puppet:puppet@NGROK_URL/payload
 # in another window
 cd puppet-ess
@@ -77,13 +79,13 @@ git commit common.yaml -m 'added encrypted secret_password'
 ## Setup webhook on github
 
 ```
-cd
+# under github's repo for puppet-ess-control-repo settings click on Webhooks
+# add a webhook with URL http://puppet:puppet@NGROK_URL/payload
 ```
 
-## Setup Testing on local workstation
+## Setup rspec Testing on local workstation
 
 ```
-
 gem install puppet-lint
 gem install rspec-puppet puppetlabs_spec_helper rspec-puppet-facts
 # download and install https://pm.puppet.com/cgi-bin/pdk_download.cgi?dist=osx&rel=10.13&arch=x86_64&ver=latest
@@ -124,7 +126,7 @@ git commit -a -m "init elk module"
 git remote add origin git@github.com:mvilain/puppet-ess-control-repo-elk.git
 git push --set-upstream origin master
 
-# r10k doesn't use submodules; instead 
+# r10k doesn't use submodules; instead subtrees
 # https://codewinsarguments.co/2016/05/01/git-submodules-vs-git-subtrees/
 # https://github.com/git/git/blob/master/contrib/subtree/git-subtree.txt
 cd ../..
