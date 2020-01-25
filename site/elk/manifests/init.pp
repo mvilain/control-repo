@@ -15,7 +15,7 @@ class elk {
     ensure => present,
     source => 'puppet:///modules/elk/etc-default-logstash',
   }
-  -> package { 'filebeats':
+  -> package { 'filebeat':
     ensure => present,
   }
   -> class {'logstash':
