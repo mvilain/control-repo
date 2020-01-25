@@ -10,7 +10,7 @@
 class elk {
 
   include ::java
-  include elk::filebeat
+
   file {'/etc/default/logstash':
     ensure  => present,
     #source  => 'puppet:///modules/elk/etc-default-logstash',
@@ -43,5 +43,7 @@ class elk {
       'server.host' => '0.0.0.0',
     }
   }
+
+  include elk::filebeat
 
 }
