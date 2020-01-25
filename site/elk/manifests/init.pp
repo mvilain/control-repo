@@ -15,16 +15,16 @@ class elk {
   }
 
 
-  class { 'elastic_stack::repo':
-    version => 6,
-  }
+#  class { 'elastic_stack::repo':
+#    version => 6,
+#  }
 
   include ::java
   class { 'elasticsearch':
     jvm_options => ['-Xms256m','-Xmx256m'],
     status      => enabled,
     ensure      => present,
-#    version     => '6.8.4',
+    version     => '6.8.4',
   }
   elasticsearch::instance { 'es-01': }
 
