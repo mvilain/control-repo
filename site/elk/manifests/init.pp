@@ -30,7 +30,8 @@ class elk {
 
 
   class {'kibana':
-    package_url => 'https://artifacts.elastic.co/downloads/kibana/kibana-6.4.0-amd64.deb',
+#    package_url => 'https://artifacts.elastic.co/downloads/kibana/kibana-6.4.0-amd64.deb',
+    ensure      => '6.4.0',
     config      => {
       'server.host' => '0.0.0.0',
     }
