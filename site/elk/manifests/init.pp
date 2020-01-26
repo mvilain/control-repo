@@ -14,20 +14,23 @@ class elk {
     version    => 6,
   }
 
+# create an empty version of this so logstash install doesn't complain
   file {'/etc/default/logstash':
     ensure  => present,
-    require => Package['filebeat'],
   }
   -> class {'logstash':
     ensure      => present,
-    package_url => 'https://artifacts.elastic.co/downloads/logstash/logstash-6.8.6.deb',
+    status      => enabled,
+    #package_url => 'https://artifacts.elastic.co/downloads/logstash/logstash-6.8.6.deb',
   }
   -> logstash::plugin{'logstash-input-beats':
   }
   -> logstash::configfile{'beats':
-    source  => 'puppet:///modules/elk/beats.conf',
+       source  => 'puppet:///modules/elk/beats.conf',
+       require => Package['filebeat'],
   }
 
+# elasticsearch controlled by specific instance names
   class { 'elasticsearch':
     jvm_options => ['-Xms256m','-Xmx256m'],
     package_url => 
@@ -40,7 +43,7 @@ class elk {
   }
 
   class {'kibana':
-    ensure => '6.8.6',
+    ensure => present,
     config => {
       'server.host' => '0.0.0.0',
     }
