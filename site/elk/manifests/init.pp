@@ -10,6 +10,9 @@
 class elk {
 
   include ::java
+  class { 'elastic_stack::repo':
+    version    => 6,
+  }
 
   file {'/etc/default/logstash':
     ensure  => present,
@@ -24,9 +27,6 @@ class elk {
   -> logstash::configfile{'beats':
     source  => 'puppet:///modules/elk/beats.conf',
   }
-
-# V7 elastic search doesn't work here, so install 6.8.6
-  include ::java
 
   class { 'elasticsearch':
     jvm_options => ['-Xms256m','-Xmx256m'],
