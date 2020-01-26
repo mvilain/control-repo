@@ -13,7 +13,6 @@ class elk {
 
   file {'/etc/default/logstash':
     ensure  => present,
-    #source  => 'puppet:///modules/elk/etc-default-logstash',
     require => Package['filebeat'],
   }
   -> class {'logstash':
@@ -30,13 +29,15 @@ class elk {
   include ::java
 
   class { 'elasticsearch':
-    ensure      => present,
-    status      => enabled,
     jvm_options => ['-Xms256m','-Xmx256m'],
-    package_url => 'https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.8.6.deb',
+    package_url => 
+'https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.8.6.deb',
     require     => Package['java'],
   }
-  -> elasticsearch::instance { 'es-01': }
+  -> elasticsearch::instance { 'es-01': 
+    ensure => present,
+    status => enabled,
+  }
 
   class {'kibana':
     ensure => '6.8.6',
