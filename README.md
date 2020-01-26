@@ -8,29 +8,39 @@ https://www.linkedin.com/learning/puppet-essential-training
 ```
 cd puppet-ess  # this is where ngrok and ssh.tar are
 vagrant up # wait for puppet and elk boxes to start
-vagrant ssh vagrant # ssh into runn puppet master's box
+vagrant ssh puppet # ssh into run puppet master's box
 sudo -s
+#apt-get update
+#apt-get upgrade -y
 cd /root
 tar -xvzf /vagrant/ssh.tar.gz
+unzip /vagrant/ngrok-stable-linux-amd64.zip
 
+# install volpopluli r10k module
 puppet module install puppet/r10k --modulepath=/etc/puppetlabs/code/modules/
-puppet apply -e 'class {"r10k": remote => "https://github.com/mvilain/puppet-ess-control-repo" }' \
-  --modulepath=/etc/puppetlabs/code/modules
+puppet apply -e 'class {"r10k": remote => "https://github.com/mvilain/puppet-ess-control-repo.git"}' --modulepath=/etc/puppetlabs/code/modules
 
+# eyaml install and config
 puppetserver gem install hiera-eyaml
 gem install hiera-eyaml
 cd /etc/puppetlabs/puppet
-eyaml createkeys
-mv /etc/puppetlabs/puppet/keys /etc/puppetlabs/puppet/eyaml
+#eyaml createkeys
+#mv /etc/puppetlabs/puppet/keys /etc/puppetlabs/puppet/eyaml
+mkdir /etc/puppetlabs/puppet/eyaml
+cp -v /vagrant/p*.pkcs7.pem /etc/puppetlabs/puppet/eyaml
 chown -R puppet:puppet /etc/puppetlabs/puppet/eyaml
 chmod -R 0500 /etc/puppetlabs/puppet/eyaml
 chmod -R 0400 /etc/puppetlabs/puppet/eyaml/*.pem
+ls -lah /etc/puppetlabs/puppet/eyaml
+#rm -f /vagrant/p*.pkcs7.pem && cp -av eyaml/*.pem /vagrant/
 
-rm -f /vagrant/p*.pkcs7.pem && cp -av eyaml/*.pem /vagrant/
+# deploy control-repo code and run server
 r10k deploy environment -pv
 puppet agent -t
 lsof -i TCP -P
+
 # run ngrok and paste the URL into the repo's webhook
+/root/ngrok http 8088
 #    http://puppet:puppet@NGROK_URL/payload
 # in another window
 cd puppet-ess
@@ -69,13 +79,13 @@ git commit common.yaml -m 'added encrypted secret_password'
 ## Setup webhook on github
 
 ```
-cd
+# under github's repo for puppet-ess-control-repo settings click on Webhooks
+# add a webhook with URL http://puppet:puppet@NGROK_URL/payload
 ```
 
-## Setup Testing on local workstation
+## Setup rspec Testing on local workstation
 
 ```
-
 gem install puppet-lint
 gem install rspec-puppet puppetlabs_spec_helper rspec-puppet-facts
 # download and install https://pm.puppet.com/cgi-bin/pdk_download.cgi?dist=osx&rel=10.13&arch=x86_64&ver=latest
@@ -116,7 +126,7 @@ git commit -a -m "init elk module"
 git remote add origin git@github.com:mvilain/puppet-ess-control-repo-elk.git
 git push --set-upstream origin master
 
-# r10k doesn't use submodules; instead 
+# r10k doesn't use submodules; instead subtrees
 # https://codewinsarguments.co/2016/05/01/git-submodules-vs-git-subtrees/
 # https://github.com/git/git/blob/master/contrib/subtree/git-subtree.txt
 cd ../..
