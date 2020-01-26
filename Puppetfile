@@ -7,13 +7,13 @@ mod 'puppetlabs-concat', '6.2.0'
 
 mod 'puppetlabs-yumrepo_core', '1.0.6'
 
-mod 'elastic-kibana', '6.8.6'
-mod 'elastic-elastic_stack', '6.8.6'
+mod 'elastic-kibana', '6.3.1'
+mod 'elastic-elastic_stack', '6.3.2'
 
-mod 'elastic-elasticsearch', '6.8.6'
+mod 'elastic-elasticsearch', '6.4.0'
 mod 'richardc-datacat', '0.6.2'
 
-mod 'elastic-logstash', '6.8.6'
+mod 'elastic-logstash', '6.1.5'
 mod 'puppetlabs-java', '6.0.0'
 mod 'puppet-archive', '4.4.0'
 
