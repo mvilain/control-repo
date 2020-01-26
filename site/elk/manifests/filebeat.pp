@@ -9,7 +9,7 @@ class elk::filebeat {
   include elastic_stack::repo
 
   package{'filebeat':
-    ensure => '6.8.6',
+    ensure => present,
   }
 
   service{'filebeat':
