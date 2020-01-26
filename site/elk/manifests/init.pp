@@ -18,7 +18,7 @@ class elk {
   }
   -> class {'logstash':
     ensure      => present,
-    package_url => 'https://artifacts.elastic.co/downloads/logstash/logstash-6.2.3.deb',
+    package_url => 'https://artifacts.elastic.co/downloads/logstash/logstash-6.8.6.deb',
   }
   -> logstash::plugin{'logstash-input-beats':
   }
@@ -31,14 +31,14 @@ class elk {
     ensure      => present,
     status      => enabled,
     jvm_options => ['-Xms256m','-Xmx256m'],
-    package_url => 'https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.2.4.deb',
+    package_url => 'https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.8.6.deb',
     require     => Package['java'],
   }
   -> elasticsearch::instance { 'es-01': }
 
   class {'kibana':
 #    package_url => 'https://artifacts.elastic.co/downloads/kibana/kibana-6.4.0-amd64.deb',
-    ensure => '6.4.0',
+    ensure => '6.8.6',
     config => {
       'server.host' => '0.0.0.0',
     }
