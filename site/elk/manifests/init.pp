@@ -33,7 +33,7 @@ class elk {
     ensure      => present,
     status      => enabled,
     jvm_options => ['-Xms256m','-Xmx256m'],
-    package_url =>     package_url => 'https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.8.6.deb',
+    package_url => 'https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.8.6.deb',
     require     => Package['java'],
   }
   -> elasticsearch::instance { 'es-01': }
