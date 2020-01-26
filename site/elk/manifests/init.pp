@@ -19,25 +19,23 @@ class elk {
     ensure  => present,
   }
   -> class {'logstash':
-    ensure      => present,
-    status      => enabled,
+    ensure => present,
+    status => enabled,
     #package_url => 'https://artifacts.elastic.co/downloads/logstash/logstash-6.8.6.deb',
   }
   -> logstash::plugin{'logstash-input-beats':
   }
   -> logstash::configfile{'beats':
-       source  => 'puppet:///modules/elk/beats.conf',
-       require => Package['filebeat'],
+    source  => 'puppet:///modules/elk/beats.conf',
   }
 
 # elasticsearch controlled by specific instance names
   class { 'elasticsearch':
     jvm_options => ['-Xms256m','-Xmx256m'],
-    package_url => 
-'https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.8.6.deb',
+    package_url => 'https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.8.6.deb',
     require     => Package['java'],
   }
-  -> elasticsearch::instance { 'es-01': 
+  -> elasticsearch::instance { 'es-01':
     ensure => present,
     status => enabled,
   }
