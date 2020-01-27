@@ -1,7 +1,10 @@
 
 class puppetboard {
   # setup apache to serve the board up
-  class { 'apache': }
+  class { 'apache':
+    ensure => present,
+    status => enabled,
+  }
   class { 'apache::mod::wsgi': }
 
   class { 'puppetboard': 
