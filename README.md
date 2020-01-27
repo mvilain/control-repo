@@ -106,6 +106,7 @@ rake syntax
 
 ## ELK Travis-CI testing (on local workstation in puppet-ess-control-repo)
 
+- create new elk module on local workstation
 ```
 cd puppet-ess-control-repo/site
 pdk new module elk
@@ -118,14 +119,19 @@ echo "require 'bundler' # https://github.com/puppetlabs/pdk-templates/issues/139
 mv Rakefile Rakefile.tmp2
 cat Rakefile.tmp[12] > Rakefile; rm Rakefile.tmp* ; rake -T
 pdk new class elk; rspec
+```
 
-# create  git@github.com:mvilain/puppet-ess-control-repo-elk.git on github
+- create git@github.com:mvilain/puppet-ess-control-repo-elk.git on github
+```
 git init
 git add .
 git commit -a -m "init elk module"
 git remote add origin git@github.com:mvilain/puppet-ess-control-repo-elk.git
 git push --set-upstream origin master
+```
 
+- create subtree of elk module
+```
 # r10k doesn't use submodules; instead subtrees
 # https://codewinsarguments.co/2016/05/01/git-submodules-vs-git-subtrees/
 # https://github.com/git/git/blob/master/contrib/subtree/git-subtree.txt
@@ -134,7 +140,8 @@ mv site/elk site/elk.git
 git subtree add --prefix site/elk/ git@github.com:mvilain/puppet-ess-control-repo-elk.git master
 rm site/elk.git
 
-# go to https://travis-ci.org/ in browser and sign in with Github account
+- sign into Travis-CI with github account
+```
 # link github repos; go to puppet-ess-elk repo;
 # select *More Options*>*Trigger Build*>*Trigger Custom Build*
 ```
@@ -172,8 +179,9 @@ git subtree push -P site/elk git@github.com:mvilain/puppet-ess-control-repo-elk.
 vagrant ssh elk
 sudo puppet agent -t # generate a key to sign
 exit
-
-# go to puppet server
+```
+- go to puppet server
+```
 vagrant ssh puppet
 sudo puppetserver ca sign --all
 
@@ -181,8 +189,10 @@ sudo puppetserver ca sign --all
 sudo r10k deploy environment -pv
 puppet generate types --environment production
 exit
+```
 
-# go back ELK vagrant instance
+- go back ELK vagrant instance
+```
 sudo puppet agent -t
 ```
 
@@ -192,10 +202,38 @@ sudo puppet agent -t
 puppet config print reportdir --section main
 cd /opt/puppetlabs/puppet/cache/reports/puppet.local/
 # look for 'evaluation_time' to improve speed of puppet runsdd
+```
 
-# requires setup of puppetdb
-# modify Puppetfile adding puppetdb and dependencies
-# add profile::puppetdb with code from module README
-# add profile::puppetdb class to role::master
-# commit, push, and run puppet on master
+### setup puppetdb
+
+- modify Puppetfile adding puppetdb and dependencies
+- add profile::puppetdb with code from module README
+- add profile::puppetdb class to role::master
+- commit, push, and run puppet on master
+
+### add reporting section [main] to puppet.conf on server and restart
+
+```
+cat <-CONF >> /etc/puppetlabs/puppet/puppet.conf
+
+[main]
+reports = store, puppetdb, http
+
+CONF
+
+systemctl restart puppetserver  # this will take a moment -- it's java
+systemctl status puppetserver --no-pager
+```
+
+### add puppetboard module and dependencies
+
+- modify Puppetfile adding puppetboard and dependencies
+- modify Puppetfile adding apache module and it's dependencies
+- create profile/manifests/puppetboard.pp
+- add profile::puppetboard to role::master.pp
+
+### run puppet on master
+```
+r10k deploy environment -pv
+puppet agent -t
 ```
