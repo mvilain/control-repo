@@ -1,10 +1,6 @@
-
 class profile::puppetboard {
   # setup apache to serve the board up
-  class { 'apache':
-    ensure => present,
-    status => enabled,
-  }
+  class { 'apache': }
   class { 'apache::mod::wsgi': }
 
   class { 'puppetboard': 
