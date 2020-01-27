@@ -20,21 +20,19 @@ mod 'puppet-archive', '4.4.0'
 mod 'mvilain-elk',
     :git => 'git@github.com:mvilain/puppet-ess-control-repo-elk.git'
 
+# https://github.com/voxpupuli/puppetboard/issues/527
 # mod 'puppetlabs-puppetdb', '7.4.0'
 # mod 'puppetlabs-inifile', '4.1.0'
-# mod 'puppetlabs-postgresql', '6.3.0'
+mod 'puppetlabs-postgresql', '6.3.0' 
 # mod 'puppetlabs-firewall', '2.2.0'
-
-# https://github.com/voxpupuli/puppetboard/issues/527
-## mod 'puppet-puppetboard', '6.0.0'
-# mod 'puppet-puppetboard', '4.0.0'
+# mod 'puppet-puppetboard', '6.0.0'
 # mod 'puppet-python', '4.0.0'
 # mod 'puppetlabs-vcsrepo', '3.1.0'
 # mod 'puppetlabs-apache', '5.4.0'
 
 mod 'puppetlabs-puppetdb', '6.0.2'
 mod 'puppetlabs-inifile', '2.2.0'
-mod 'puppetlabs-postgresql', '5.4.0'
+#mod 'puppetlabs-postgresql', '5.4.0' # fails with dependency for package apt-transport-https
 mod 'puppetlabs-firewall', '1.12.0'
 mod 'puppet-puppetboard', '4.0.0'
 #mod 'stankevich-python', '1.18.2'
