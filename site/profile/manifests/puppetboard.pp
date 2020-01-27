@@ -8,7 +8,7 @@ class profile::puppetboard {
     ensure => present,
   }
   -> class { 'apache': }
-  -> class { 'apache::mod::wsgi': }
+  class { 'apache::mod::wsgi': }
 
 # https://github.com/voxpupuli/puppetboard/issues/527
   class { 'puppetboard': 
