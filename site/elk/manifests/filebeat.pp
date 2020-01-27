@@ -22,6 +22,7 @@ class elk::filebeat (
 
 # test with 
 # filebeat -v -e -d "*"
+# filebeat test config -e
   file{'/etc/filebeat/filebeat.yml':
     ensure  => file,
     content => epp('elk/filebeat.yml.epp', {
