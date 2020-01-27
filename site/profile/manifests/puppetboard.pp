@@ -7,7 +7,7 @@ class profile::puppetboard {
   class { 'puppetboard': 
     manage_git        => true,
     manage_virtualenv => true,
-    revision          => 'v1.0.0',
+    revision          => 'v1.0.0', # repo tag
   }
 
   # Access Puppetboard through pboard.example.com

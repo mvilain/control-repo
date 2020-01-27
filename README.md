@@ -5,6 +5,7 @@ https://www.linkedin.com/learning/puppet-essential-training
 
 ## Setup puppet master in virtualbox puppet instance
 
+- create puppet master and elk Vagrant instances
 ```
 cd puppet-ess  # this is where ngrok and ssh.tar are
 vagrant up # wait for puppet and elk boxes to start
@@ -15,12 +16,16 @@ sudo -s
 cd /root
 tar -xvzf /vagrant/ssh.tar.gz
 unzip /vagrant/ngrok-stable-linux-amd64.zip
-
+```
+- install and configure r10k on puppet master instance
+```
 # install volpopluli r10k module
 puppet module install puppet/r10k --modulepath=/etc/puppetlabs/code/modules/
 puppet apply -e 'class {"r10k": remote => "https://github.com/mvilain/puppet-ess-control-repo.git"}' --modulepath=/etc/puppetlabs/code/modules
+```
 
-# eyaml install and config
+- install and configure eyaml
+```
 puppetserver gem install hiera-eyaml
 gem install hiera-eyaml
 cd /etc/puppetlabs/puppet
@@ -33,7 +38,10 @@ chmod -R 0500 /etc/puppetlabs/puppet/eyaml
 chmod -R 0400 /etc/puppetlabs/puppet/eyaml/*.pem
 ls -lah /etc/puppetlabs/puppet/eyaml
 #rm -f /vagrant/p*.pkcs7.pem && cp -av eyaml/*.pem /vagrant/
+```
 
+- deploy control-repo code and use ngrok to service webhook
+```
 # deploy control-repo code and run server
 r10k deploy environment -pv
 puppet agent -t
@@ -47,7 +55,6 @@ cd puppet-ess
 vagrant ssh vagrant
 sudo -s
 cd /etc/puppetlabs/code/environments/production
-
 ```
 
 ## Setup Local workstation
@@ -95,8 +102,10 @@ pdk new module rspec_example
 cp .sync.yml rspec_example/.sync.yml
 cd rspec_example/
 pdk update
+
+# https://github.com/puppetlabs/pdk-templates/issues/139"
 mv Rakefile Rakefile.tmp2
-echo "require 'bundler' # https://github.com/puppetlabs/pdk-templates/issues/139" > Rakefile.tmp1
+echo "require 'bundler' > Rakefile.tmp1
 cat Rakefile.tmp[12] > Rakefile; rm Rakefile.tmp* # rake -T
 pdk new class rspec_example
 rake spec
@@ -115,13 +124,14 @@ cp .sync.yml elk/
 cd elk
 pdk update --force
 
-echo "require 'bundler' # https://github.com/puppetlabs/pdk-templates/issues/139" > Rakefile.tmp1
+# https://github.com/puppetlabs/pdk-templates/issues/139
+echo "require 'bundler'" > Rakefile.tmp1
 mv Rakefile Rakefile.tmp2
 cat Rakefile.tmp[12] > Rakefile; rm Rakefile.tmp* ; rake -T
 pdk new class elk; rspec
 ```
 
-- create git@github.com:mvilain/puppet-ess-control-repo-elk.git on github
+- create separate github repo puppet-ess-control-repo-elk.git
 ```
 git init
 git add .
@@ -139,6 +149,7 @@ cd ../..
 mv site/elk site/elk.git
 git subtree add --prefix site/elk/ git@github.com:mvilain/puppet-ess-control-repo-elk.git master
 rm site/elk.git
+```
 
 - sign into Travis-CI with github account
 ```
@@ -166,8 +177,8 @@ bundle exec rake beaker
 
 ## ELK Module (on local workstation)
 
+- add elastic-kibana puppetfile dependencies
 ```
-add 'mod 'elastic-kibana', '6.3.1'' to Puppetfile with dependencies
 #add site/elk/manifests/init.pp
 #add site/elk/files/filebeats.conf
 git subtree push -P site/elk git@github.com:mvilain/puppet-ess-control-repo-elk.git master
@@ -180,19 +191,21 @@ vagrant ssh elk
 sudo puppet agent -t # generate a key to sign
 exit
 ```
-- go to puppet server
+- fix puppet type dependencies on puppet master
 ```
 vagrant ssh puppet
 sudo puppetserver ca sign --all
+sudo r10k deploy environment -pv
 
 # https://github.com/elastic/puppet-elasticsearch/issues/982
-sudo r10k deploy environment -pv
 puppet generate types --environment production
-exit
 ```
 
-- go back ELK vagrant instance
+- re-apply puppet configuration on elk instance
 ```
+sudo puppet agent -t
+
+# requires 2nd run to pick up filebeat dependencies
 sudo puppet agent -t
 ```
 
@@ -214,12 +227,11 @@ cd /opt/puppetlabs/puppet/cache/reports/puppet.local/
 ### add reporting section [main] to puppet.conf on server and restart
 
 ```
-cat <-CONF >> /etc/puppetlabs/puppet/puppet.conf
+vim /etc/puppetlabs/puppet/puppet.conf
 
 [main]
 reports = store, puppetdb, http
 
-CONF
 
 systemctl restart puppetserver  # this will take a moment -- it's java
 systemctl status puppetserver --no-pager
@@ -236,4 +248,6 @@ systemctl status puppetserver --no-pager
 ```
 r10k deploy environment -pv
 puppet agent -t
+```
+
 ```
