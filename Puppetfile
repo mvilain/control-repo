@@ -31,7 +31,7 @@ mod 'puppetlabs-postgresql', '6.3.0'
 # mod 'puppetlabs-apache', '5.4.0'
 
 # https://github.com/voxpupuli/puppetboard/issues/527
-mod 'puppetlabs-puppetdb', '6.6.0'
+mod 'puppetlabs-puppetdb', '6.5.0'
 mod 'puppetlabs-inifile', '2.2.0'
 #mod 'puppetlabs-postgresql', '5.4.0' # fails dependency for apt-transport-https
 mod 'puppetlabs-firewall', '1.12.0'
