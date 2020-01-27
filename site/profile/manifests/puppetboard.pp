@@ -21,12 +21,13 @@ class profile::puppetboard {
   -> python::pip { 'pypuppetdb':
     virtualenv => '/srv/puppetboard/virtenv-puppetboard',
   }
+
   # fix issues with modules not found
   # https://github.com/voxpupuli/puppet-puppetboard/issues/128
-  -> class { 'puppetboard': 
+  class { 'puppetboard': 
     manage_git        => true,
     manage_virtualenv => true,
-    revision          => 'v1.0.0', # repo tag
+    #revision          => 'v1.1.0', # repo tag
   }
 
   # Access Puppetboard through pboard.example.com
