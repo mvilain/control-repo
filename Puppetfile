@@ -19,3 +19,8 @@ mod 'puppet-archive', '4.4.0'
 
 mod 'mvilain-elk',
     :git => 'git@github.com:mvilain/puppet-ess-control-repo-elk.git'
+
+mod 'puppetlabs-puppetdb', '7.4.0'
+mod 'puppetlabs-inifile', '4.1.0'
+mod 'puppetlabs-postgresql', '6.3.0'
+mod 'puppetlabs-firewall', '2.2.0'
