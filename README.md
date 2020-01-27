@@ -7,7 +7,10 @@ https://www.linkedin.com/learning/puppet-essential-training
 
 - create puppet master and elk Vagrant instances
 ```
-cd puppet-ess  # this is where ngrok and ssh.tar are
+cd puppet-ess
+# clone this git repo and use Vagrantfile instead of example code 
+# it uses public network instead of private
+# ngrok won't work in private network
 vagrant up # wait for puppet and elk boxes to start
 vagrant ssh puppet # ssh into run puppet master's box
 sudo -s
@@ -22,6 +25,13 @@ unzip /vagrant/ngrok-stable-linux-amd64.zip
 # install volpopluli r10k module
 puppet module install puppet/r10k --modulepath=/etc/puppetlabs/code/modules/
 puppet apply -e 'class {"r10k": remote => "https://github.com/mvilain/puppet-ess-control-repo.git"}' --modulepath=/etc/puppetlabs/code/modules
+vim /etc/puppetlabs/puppet/puppet.conf
+
+[main]
+reports = store, puppetdb, http
+
+
+tail /etc/puppetlabs/puppet/puppet.conf
 ```
 
 - install and configure eyaml
@@ -42,8 +52,11 @@ ls -lah /etc/puppetlabs/puppet/eyaml
 
 - deploy control-repo code and use ngrok to service webhook
 ```
-# deploy control-repo code and run server
+cd /etc/puppetlabs/code/environments
+ls -l production
 r10k deploy environment -pv
+ls -l production
+
 puppet agent -t
 lsof -i TCP -P
 
@@ -239,7 +252,7 @@ systemctl status puppetserver --no-pager
 
 ### add puppetboard module and dependencies
 
-- modify Puppetfile adding puppetboard and dependencies
+- modify Puppetfile adding puppetboard and dependencies (current modules don't work)
 - modify Puppetfile adding apache module and it's dependencies
 - create profile/manifests/puppetboard.pp
 - add profile::puppetboard to role::master.pp
@@ -248,6 +261,4 @@ systemctl status puppetserver --no-pager
 ```
 r10k deploy environment -pv
 puppet agent -t
-```
-
 ```

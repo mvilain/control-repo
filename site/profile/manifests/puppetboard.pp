@@ -1,6 +1,9 @@
 class profile::puppetboard {
-  # setup apache to serve the board up
-  class { 'apache': }
+  # this file is needed to create the virtual environment for puppetboard
+  file{'/srv/puppetboard/puppetboard/requirements.txt':
+    ensure => present,
+  }
+  -> class { 'apache': }
   class { 'apache::mod::wsgi': }
 
 # https://github.com/voxpupuli/puppetboard/issues/527
