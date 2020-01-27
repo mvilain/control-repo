@@ -1,2 +1,8 @@
+filebeat.inputs:
+- type: log
+  enabled: true
+  paths:
+    - /var/log/*.log
+
 output.logstash:
-  hosts:["<%= $logstash_server %>:<%= $logstash_port %>"]
+  hosts: ["<%= $logstash_server %>:<%= $logstash_port %>"]
