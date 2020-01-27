@@ -1,5 +1,5 @@
 
-class puppetboard {
+class profile::puppetboard {
   # setup apache to serve the board up
   class { 'apache':
     ensure => present,
