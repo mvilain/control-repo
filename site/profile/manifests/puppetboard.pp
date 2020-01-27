@@ -1,21 +1,14 @@
 class profile::puppetboard {
 
-  # fix issues with modules not found
-  # https://github.com/voxpupuli/puppet-puppetboard/issues/128
+  class { 'apache': }
+  class { 'apache::mod::wsgi': }
 
   # this file is needed to create the virtual environment for puppetboard
   file{'/srv/puppetboard/puppetboard/requirements.txt':
     ensure => present,
   }
-  -> class { 'apache': }
-  class { 'apache::mod::wsgi': }
-
-# https://github.com/voxpupuli/puppetboard/issues/527
-  class { 'puppetboard': 
-    manage_git        => true,
-    manage_virtualenv => true,
-    revision          => 'v1.0.0', # repo tag
-  }
+  # fix issues with modules not found
+  # https://github.com/voxpupuli/puppetboard/issues/527
   -> python::pip { 'Flask':
     virtualenv => '/srv/puppetboard/virtenv-puppetboard',
   }
@@ -27,6 +20,13 @@ class profile::puppetboard {
   }
   -> python::pip { 'pypuppetdb':
     virtualenv => '/srv/puppetboard/virtenv-puppetboard',
+  }
+  # fix issues with modules not found
+  # https://github.com/voxpupuli/puppet-puppetboard/issues/128
+  -> class { 'puppetboard': 
+    manage_git        => true,
+    manage_virtualenv => true,
+    revision          => 'v1.0.0', # repo tag
   }
 
   # Access Puppetboard through pboard.example.com
