@@ -184,25 +184,18 @@ exit
 
 # go back ELK vagrant instance
 sudo puppet agent -t
+```
 
+## REPORTING (on puppet server)
 
+```
+puppet config print reportdir --section main
+cd /opt/puppetlabs/puppet/cache/reports/puppet.local/
+# look for 'evaluation_time' to improve speed of puppet runsdd
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# requires setup of puppetdb
+# modify Puppetfile adding puppetdb and dependencies
+# add profile::puppetdb with code from module README
+# add profile::puppetdb class to role::master
+# commit, push, and run puppet on master
 ```
