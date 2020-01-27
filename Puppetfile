@@ -27,7 +27,7 @@ mod 'puppetlabs-firewall', '2.2.0'
 
 # https://github.com/voxpupuli/puppetboard/issues/527
 ## mod 'puppet-puppetboard', '6.0.0'
-mod 'puppet-puppetboard', '5.0.0'
+mod 'puppet-puppetboard', '6.0.0'
 mod 'puppet-python', '4.0.0'
 #mod 'stahnma-epel', '1.3.1'
 mod 'puppetlabs-vcsrepo', '3.1.0'
