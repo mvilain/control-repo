@@ -1,6 +1,6 @@
 class profile::r10k {
   class { 'r10k':
-    remote  => 'https://github.com/mvilain/control-repo',
+    remote  => 'https://github.com/mvilain/puppet-ess-control-repo.git',
   }
   class { 'r10k::webhook::config':
     use_mcollective => false,

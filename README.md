@@ -25,10 +25,10 @@ unzip /vagrant/ngrok-stable-linux-amd64.zip
 puppet module install puppet/r10k --modulepath=/etc/puppetlabs/code/modules/
 puppet apply -e 'class {"r10k": remote => "https://github.com/mvilain/puppet-ess-control-repo.git"}' --modulepath=/etc/puppetlabs/code/modules
 
-echo '\n[main]'                          >>/etc/puppetlabs/puppet/puppet.conf
-echo 'reports = store, puppetdb, http\n' >>/etc/puppetlabs/puppet/puppet.conf
-
-
+echo ""                                >>/etc/puppetlabs/puppet/puppet.conf
+echo "[main]"                          >>/etc/puppetlabs/puppet/puppet.conf
+echo "reports = store, puppetdb, http" >>/etc/puppetlabs/puppet/puppet.conf
+echo ""                                >>/etc/puppetlabs/puppet/puppet.conf
 tail /etc/puppetlabs/puppet/puppet.conf
 ```
 
@@ -50,6 +50,8 @@ ls -lah /etc/puppetlabs/puppet/eyaml
 
 - deploy control-repo code and use ngrok to service webhook
 ```
+#------------------------------------------------------------
+sudo -s
 cd /etc/puppetlabs/code/environments
 ls -l production
 r10k deploy environment -pv
