@@ -21,22 +21,11 @@ mod 'mvilain-elk',
     :git => 'git@github.com:mvilain/puppet-ess-control-repo-elk.git'
 
 # https://github.com/voxpupuli/puppetboard/issues/527
-# mod 'puppetlabs-puppetdb', '7.4.0'
-# mod 'puppetlabs-inifile', '4.1.0'
-# mod 'puppetlabs-postgresql', '6.3.0' 
-# mod 'puppetlabs-firewall', '2.2.0'
-# mod 'puppet-puppetboard', '6.0.0'
-# mod 'puppet-python', '4.0.0'
-# mod 'puppetlabs-vcsrepo', '3.1.0'
-# mod 'puppetlabs-apache', '5.4.0'
-
-# https://github.com/voxpupuli/puppetboard/issues/527  6.0.2 installs but misses parse
-mod 'puppetlabs-puppetdb', '7.0.0'
+mod 'puppetlabs-puppetdb', '7.4.0'
 mod 'puppetlabs-inifile', '4.1.0'
 mod 'puppetlabs-postgresql', '6.3.0' 
 mod 'puppetlabs-firewall', '2.2.0'
 mod 'puppet-puppetboard', '6.0.0'
-#mod 'stankevich-python', '1.18.2' # deprecated
 mod 'puppet-python', '4.0.0'
 mod 'puppetlabs-vcsrepo', '3.1.0'
 mod 'puppetlabs-apache', '5.4.0'
