@@ -50,8 +50,6 @@ ls -lah /etc/puppetlabs/puppet/eyaml
 
 - deploy control-repo code and use ngrok to service webhook
 ```
-#------------------------------------------------------------
-sudo -s
 cd /etc/puppetlabs/code/environments
 ls -l production
 r10k deploy environment -pv

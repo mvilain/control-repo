@@ -6,6 +6,7 @@ class profile::puppetboard {
 
   # module puppetboard 1.1 requires python 3.[678]
   # fix issues with modules not found
+  # but the virtual environment crated by puppetboard installs python 2.7
   # https://github.com/voxpupuli/puppet-puppetboard/issues/128
   # this file is needed to create the virtual environment for puppetboard
   class { 'puppetboard': 
