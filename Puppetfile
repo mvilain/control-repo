@@ -32,12 +32,11 @@ mod 'mvilain-elk',
 
 # https://github.com/voxpupuli/puppetboard/issues/527  6.0.2 installs but misses parse
 mod 'puppetlabs-puppetdb', '7.0.0'
-mod 'puppetlabs-inifile', '2.2.0'
-#mod 'puppetlabs-postgresql', '5.4.0' # fails dependency for apt-transport-https
+mod 'puppetlabs-inifile', '4.1.0'
 mod 'puppetlabs-postgresql', '6.3.0' 
-mod 'puppetlabs-firewall', '1.12.0'
-mod 'puppet-puppetboard', '4.0.0'
+mod 'puppetlabs-firewall', '2.2.0'
+mod 'puppet-puppetboard', '6.0.0'
 #mod 'stankevich-python', '1.18.2' # deprecated
 mod 'puppet-python', '4.0.0'
-mod 'puppetlabs-vcsrepo', '2.3.0'
-mod 'puppetlabs-apache', '3.1.0'
+mod 'puppetlabs-vcsrepo', '3.1.0'
+mod 'puppetlabs-apache', '5.4.0'
