@@ -25,10 +25,9 @@ unzip /vagrant/ngrok-stable-linux-amd64.zip
 # install volpopluli r10k module
 puppet module install puppet/r10k --modulepath=/etc/puppetlabs/code/modules/
 puppet apply -e 'class {"r10k": remote => "https://github.com/mvilain/puppet-ess-control-repo.git"}' --modulepath=/etc/puppetlabs/code/modules
-vim /etc/puppetlabs/puppet/puppet.conf
 
-[main]
-reports = store, puppetdb, http
+echo '\n[main]'                          >>/etc/puppetlabs/puppet/puppet.conf
+echo 'reports = store, puppetdb, http\n' >>/etc/puppetlabs/puppet/puppet.conf
 
 
 tail /etc/puppetlabs/puppet/puppet.conf
@@ -170,9 +169,12 @@ rm site/elk.git
 # select *More Options*>*Trigger Build*>*Trigger Custom Build*
 ```
 
-## ELK Beaker testing (broken) (on local workstation in puppet-ess-control-repo)
+## ELK Beaker testing (on local workstation in puppet-ess-control-repo)
 
 ```
+#
+# this is currently broken--beaker runs the virtual machine but it can't connect
+#
 cd puppet-ess-control-repo/site/elk
 # edit elk Gemfile to add
 ## group :acceptance do
@@ -220,14 +222,20 @@ sudo puppet agent -t
 
 # requires 2nd run to pick up filebeat dependencies
 sudo puppet agent -t
+ps -ef | grep -E "elastic|kibana|logstash|filebeat"
+sleep 60; lsof -i TCP -P	# java takes time to startup
 ```
 
-## REPORTING (on puppet server)
+## REPORTING (puppetboard on puppet server)
 
 ```
+#
+# currently broken using most current release
+# https://github.com/voxpupuli/puppetboard/issues/527
+#
 puppet config print reportdir --section main
 cd /opt/puppetlabs/puppet/cache/reports/puppet.local/
-# look for 'evaluation_time' to improve speed of puppet runsdd
+# look for 'evaluation_time' to improve speed of puppet runs
 ```
 
 ### setup puppetdb
@@ -261,4 +269,5 @@ systemctl status puppetserver --no-pager
 ```
 r10k deploy environment -pv
 puppet agent -t
+# http://localhost:8000
 ```
