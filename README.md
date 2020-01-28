@@ -22,7 +22,6 @@ unzip /vagrant/ngrok-stable-linux-amd64.zip
 ```
 - install and configure r10k on puppet master instance
 ```
-# install volpopluli r10k module
 puppet module install puppet/r10k --modulepath=/etc/puppetlabs/code/modules/
 puppet apply -e 'class {"r10k": remote => "https://github.com/mvilain/puppet-ess-control-repo.git"}' --modulepath=/etc/puppetlabs/code/modules
 
@@ -57,6 +56,7 @@ r10k deploy environment -pv
 ls -l production
 
 puppet agent -t
+netstat -tulpn     # show ports
 lsof -i TCP -P
 
 # run ngrok and paste the URL into the repo's webhook
