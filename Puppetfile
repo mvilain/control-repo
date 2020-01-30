@@ -1,8 +1,15 @@
+# puppet module install puppet-r10k --version 8.0.0 (installed by hand)
+#mod 'puppetlabs-stdlib', '6.2.0'
+#mod 'puppetlabs-inifile', '3.1.0'
+#mod 'puppetlabs-vcsrepo', '2.4.0'
+#mod 'puppetlabs-git', '0.5.0'
+
 # puppet module install elastic-kibana --version 6.3.1
 mod 'elastic-kibana', '6.3.1'
 mod 'elastic-elastic_stack', '6.3.2'
 mod 'puppetlabs-apt', '7.3.0'
 mod 'puppetlabs-stdlib', '6.2.0'
+
 mod 'puppetlabs-translate', '2.1.0'
 mod 'puppet-yum', '4.1.0'
 mod 'puppetlabs-concat', '6.2.0'
