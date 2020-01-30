@@ -32,10 +32,11 @@ echo ""                                >>/etc/puppetlabs/puppet/puppet.conf
 tail /etc/puppetlabs/puppet/puppet.conf
 ```
 
-- install and configure eyaml
+- install & configure eyaml on puppetserver, puppet VM, and local workstation
 ```
+## ensure highline is installed
+gem install highline hiera-eyaml
 puppetserver gem install hiera-eyaml
-gem install hiera-eyaml
 cd /etc/puppetlabs/puppet
 #eyaml createkeys
 #mv /etc/puppetlabs/puppet/keys /etc/puppetlabs/puppet/eyaml
