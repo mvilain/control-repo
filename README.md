@@ -34,7 +34,7 @@ tail /etc/puppetlabs/puppet/puppet.conf
 
 - install & configure eyaml on puppetserver, puppet VM, and local workstation
 ```
-## ensure highline is installed
+## ensure highline is installed on workstation in rbenv
 gem install hiera-eyaml
 puppetserver gem install hiera-eyaml
 cd /etc/puppetlabs/puppet

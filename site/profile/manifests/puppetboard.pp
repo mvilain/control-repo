@@ -11,7 +11,7 @@ class profile::puppetboard {
   # this file is needed to create the virtual environment for puppetboard
   class { 'puppetboard': 
     manage_git        => true,
-    manage_virtualenv => true,
+    manage_virtualenv => false,
   }
 
   # Access Puppetboard through pboard.example.com
