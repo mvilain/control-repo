@@ -125,7 +125,7 @@ rake lint
 rake syntax
 ```
 
-## ELK Travis-CI testing (on local workstation in puppet-ess-control-repo)
+## ELK Travis-CI testing (on local workstation in control-repo)
 
 - create new elk module on local workstation
 ```
@@ -170,6 +170,8 @@ rm site/elk.git
 ```
 
 ## ELK Beaker testing (on local workstation in puppet-ess-control-repo)
+
+*this is currently broken--beaker runs the virtual machine but it can't connect*
 
 ```
 #
@@ -271,3 +273,32 @@ r10k deploy environment -pv
 puppet agent -t
 # http://localhost:8000
 ```
+
+## MONITORING PUPPET WITH ELK
+
+- edit /etc/puppetlabs/puppetserver/logback.xml (note 2 appender blocks)
+- copy puppetserver.log appender block and paste below
+```
+change name to "JSON"
+change encoder to be <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+```
+- near EOF, there's appender-ref lines. Add another for JSON entry
+- copy/paste code /control-repo/request-logging.xml below 1st appender in /etc/puppetlabs/puppetserver/request-logging.xml
+- add another appender-ref entry for JSON near end of file
+- restart puppetserver
+```
+systemctl restart puppetserver # java...it will take a while
+```
+
+- setup elk prospectors by editting site/elk/manifests/filebeat.pp
+```
+# add an empty array parameter for prospectors to elk::filebeat class
+# add $prospectors variable to epp template
+```
+
+- create site/profile/manifests/filebeat_puppetserver.pp
+- edit site/role/manfests/master.pp to add "filebeat_puppetserver"
+- ensure elk server is up and running
+- run puppet on master to add puppetserver logs to ELK stack
+
+
