@@ -1,5 +1,5 @@
 class profile::puppetdb{
-  # Configure puppetdb and its underlying database
+  # Configure puppetdb and its underlying database postgresql
   class { 'puppetdb': }
   # Configure the Puppet master to use puppetdb
   class { 'puppetdb::master::config': }

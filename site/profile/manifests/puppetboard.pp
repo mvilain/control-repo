@@ -3,19 +3,6 @@ class profile::puppetboard {
   # independent but needed to serve puppetboard web site
   class { 'apache': }
   class { 'apache::mod::wsgi': }
-  include profile::puppetdb
-
-  # puppetdb when added first correctly creates user and group postgres
-  # but it's ordering is wrong when called inside puppetboard
-  # which means you can't create a puppetboard server with a puppetdb on another host
-  user {'postgres':
-    ensure  => present,
-    uid     => 112,
-  }->
-  group {'postgres':
-    ensure  => present,
-    gid     => 117,
-  }->
 
   # https://github.com/voxpupuli/puppetboard/issues/527
   # module puppetboard 1.1 requires python 3.[678]
