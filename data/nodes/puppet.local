@@ -1,0 +1,4 @@
+---
+hierarchy:
+
+puppetboard::params::virtualenv_version: 3.6
