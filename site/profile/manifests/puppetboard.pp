@@ -3,6 +3,7 @@ class profile::puppetboard {
   # independent but needed to serve puppetboard web site
   class { 'apache': }
   class { 'apache::mod::wsgi': }
+  include profile::puppetdb
 
   # puppetdb when added first correctly creates this group
   # but it's ordering is wrong when called within puppetboard
