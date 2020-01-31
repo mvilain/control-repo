@@ -1,3 +1,3 @@
 ---
 
-puppetboard::params::virtualenv_version: 3.6
+puppetboard::virtualenv_version: 3.6
