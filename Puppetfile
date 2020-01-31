@@ -37,7 +37,10 @@ mod 'puppetlabs-postgresql', '6.3.0'
 
 # puppet module install puppet-puppetboard --version 6.0.0
 # https://github.com/voxpupuli/puppetboard/issues/527
-#mod 'puppet-puppetboard', '6.0.0'
+# requires
+#  puppetboard::virtualenv_version: "3.6"
+# in data/common.yaml
+mod 'puppet-puppetboard', '6.0.0'
 mod 'puppet-python', '3.0.1'
 mod 'stahnma-epel', '1.3.1'
 mod 'puppetlabs-vcsrepo', '2.4.0'
