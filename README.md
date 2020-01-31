@@ -11,8 +11,8 @@ cd puppet-ess
 # clone this git repo and use Vagrantfile instead of example code 
 # it uses public network instead of private
 # ngrok won't work in private network
-vagrant up # wait for puppet and elk boxes to start
-vagrant ssh puppet # ssh into run puppet master's box
+vagrant up
+vagrant ssh puppet
 sudo -s
 #apt-get update
 #apt-get upgrade -y
