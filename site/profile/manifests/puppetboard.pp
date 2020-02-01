@@ -21,6 +21,10 @@ class profile::puppetboard {
     ensure     => present,
     virtualenv => '/srv/puppetboard/virtenv-puppetboard',
   }
+  
+  file{'/srv/puppetboard/virtenv-puppetboard':
+    ensure  => directory,
+  }
 
   
   # puppetdb needs postgresql server installed
@@ -45,6 +49,7 @@ class profile::puppetboard {
     manage_git        => true,
     manage_virtualenv => true,
     revision          => '1.0.0',
+    require           => File['/srv/puppetboard/virtenv-puppetboard'],
   }
   # fix issues with modules not found
   # https://github.com/voxpupuli/puppet-puppetboard/issues/128
