@@ -226,7 +226,7 @@ sudo puppet agent -t
 # requires 2nd run to pick up filebeat dependencies
 sudo puppet agent -t
 ps -ef | grep -E "elastic|kibana|logstash|filebeat"
-sleep 60; lsof -i TCP -P	# java takes time to startup
+sleep 60; lsof -i TCP -P   # java takes time to startup
 ```
 
 ## REPORTING (puppetboard on puppet server)
@@ -267,6 +267,10 @@ systemctl status puppetserver --no-pager
 - modify Puppetfile adding apache module and it's dependencies
 - create profile/manifests/puppetboard.pp
 - add profile::puppetboard to role::master.pp
+
+**this currently requires puppet agent -t be run twice. Apparently the way the puppetboard
+module is written, it compiles on the master to run the postgresql resource before
+all it's resources are installed. The user, group, and binaries of postgresql aren't installed in the right order before the application is setup **
 
 ### run puppet on master
 ```

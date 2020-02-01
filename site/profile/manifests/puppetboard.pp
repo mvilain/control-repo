@@ -2,7 +2,14 @@ class profile::puppetboard {
 
   # independent but needed to serve puppetboard web site
   class { 'apache': }
-  class { 'apache::mod::wsgi': }
+  #class { 'apache::mod::wsgi': }
+
+  # puppetdb needs postgresql server installed; doesn't install package in right order
+  # but it's ordering is wrong when called inside puppetboard
+  # which means you can't create a puppetboard server with a puppetdb on another host
+  package {'postgres':
+    ensure  => present,
+  }
 
   # https://github.com/voxpupuli/puppetboard/issues/527
   # module puppetboard 1.1 requires python 3.[678]
@@ -17,7 +24,7 @@ class profile::puppetboard {
   # to examine puppet's heira lookup
   # OR install gem heira_explain
   # to display lookups in heira
-  class { 'puppetboard': 
+  -> class { 'puppetboard': 
     manage_git        => true,
     manage_virtualenv => true,
   }
@@ -32,6 +39,11 @@ class profile::puppetboard {
   -> python::pip { 'WTForms':
     virtualenv => '/srv/puppetboard/virtenv-puppetboard',
   }
+  # also reinstall wsgi module for python3
+  -> python::pip { 'mod_wsgi':
+    virtualenv => '/srv/puppetboard/virtenv-puppetboard',
+  }
+
 
   # Access Puppetboard through localhost:8000
   class { 'puppetboard::apache::vhost':
