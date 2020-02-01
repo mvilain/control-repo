@@ -5,6 +5,14 @@ class profile::puppetboard {
   #installs for system python (e.g. python2)
   class { 'apache::mod::wsgi': }
   -> package{'libapache2-mod-wsgi-py3': ensure => present, }
+  -> package{'apache2-dev': ensure => present, }
+  # also reinstall wsgi module for python3
+  # libapache2-mod-wsgi-py3
+  -> python::pip { 'mod_wsgi':
+    ensure     => present,
+    virtualenv => '/srv/puppetboard/virtenv-puppetboard',
+  }
+
   
   # puppetdb needs postgresql server installed; doesn't install package in right order
   # but it's ordering is wrong when called inside puppetboard
@@ -42,13 +50,6 @@ class profile::puppetboard {
 #    ensure     => present,
 #    virtualenv => '/srv/puppetboard/virtenv-puppetboard',
 #  }
-  # also reinstall wsgi module for python3
-  # libapache2-mod-wsgi-py3
-  -> python::pip { 'mod_wsgi':
-    ensure     => present,
-    virtualenv => '/srv/puppetboard/virtenv-puppetboard',
-  }
-
 
   # Access Puppetboard through localhost:8000
   class { 'puppetboard::apache::vhost':
