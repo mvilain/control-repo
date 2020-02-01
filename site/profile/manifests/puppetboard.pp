@@ -31,18 +31,21 @@ class profile::puppetboard {
   # fix issues with modules not found
   # https://github.com/voxpupuli/puppet-puppetboard/issues/128
 #  -> python::pip { 'Flask':
+#    ensure     => present,
 #    virtualenv => '/srv/puppetboard/virtenv-puppetboard',
 #  }
 #  -> python::pip { 'Flask-WTF':
+#    ensure     => present,
 #    virtualenv => '/srv/puppetboard/virtenv-puppetboard',
 #  }
 #  -> python::pip { 'WTForms':
+#    ensure     => present,
 #    virtualenv => '/srv/puppetboard/virtenv-puppetboard',
 #  }
   # also reinstall wsgi module for python3
   # libapache2-mod-wsgi-py3
   -> python::pip { 'mod_wsgi':
-    version    => 'latest',
+    ensure     => present,
     virtualenv => '/srv/puppetboard/virtenv-puppetboard',
   }
 
