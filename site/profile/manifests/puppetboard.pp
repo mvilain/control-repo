@@ -40,9 +40,9 @@ class profile::puppetboard {
   # https://github.com/voxpupuli/puppetboard/issues/527
   # module puppetboard 1.1 requires python 3.[678]
   # 'system' is default puppetboard virtual environment [python 2.7 on Ubuntu 18.04]
-  # fixed by adding
+  # python3.6 fixed by adding
   #  puppetboard::virtualenv_version: "3.6"
-  # in data/common.yaml
+  # in data/common.yaml...but wsgi.py is still python2 code
   #
   # https://puppet.com/blog/troubleshooting-hiera/
   # use 
@@ -56,7 +56,6 @@ class profile::puppetboard {
   -> class { 'puppetboard': 
     manage_git        => true,
     manage_virtualenv => true,
-    #revision          => 'v1.0.0',
   }
   # fix issues with modules not found
   # https://github.com/voxpupuli/puppet-puppetboard/issues/128
