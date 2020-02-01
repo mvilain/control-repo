@@ -16,7 +16,7 @@ cd puppet-ess
 # it uses public network instead of private
 # ngrok won't work in private network
 vagrant up
-#-1--------------------------------------------
+#-01--------------------------------------------
 vagrant ssh puppet
 sudo -s
 #apt-get update
@@ -24,16 +24,16 @@ sudo -s
 cd /root
 tar -xvzf /vagrant/ssh.tar.gz
 unzip /vagrant/ngrok-stable-linux-amd64.zip
-#-2--------------------------------------------
+#-02--------------------------------------------
 puppet module install puppet/r10k --modulepath=/etc/puppetlabs/code/modules/
 puppet apply -e 'class {"r10k": remote => "https://github.com/mvilain/puppet-ess-control-repo.git"}' --modulepath=/etc/puppetlabs/code/modules
-#--------------------------------------------
+#-03-------------------------------------------
 echo ""                                >>/etc/puppetlabs/puppet/puppet.conf
 echo "[main]"                          >>/etc/puppetlabs/puppet/puppet.conf
 echo "reports = store, puppetdb, http" >>/etc/puppetlabs/puppet/puppet.conf
 echo ""                                >>/etc/puppetlabs/puppet/puppet.conf
 tail /etc/puppetlabs/puppet/puppet.conf
-#-3--------------------------------------------
+#-04--------------------------------------------
 ## ensure highline is installed on workstation in rbenv
 gem install hiera-eyaml
 puppetserver gem install hiera-eyaml
@@ -47,16 +47,16 @@ chmod -R 0500 /etc/puppetlabs/puppet/eyaml
 chmod -R 0400 /etc/puppetlabs/puppet/eyaml/*.pem
 ls -lah /etc/puppetlabs/puppet/eyaml
 #rm -f /vagrant/p*.pkcs7.pem && cp -av eyaml/*.pem /vagrant/
-#-4--------------------------------------------
+#-05--------------------------------------------
 cd /etc/puppetlabs/code/environments
 ls -l production
 r10k deploy environment -pv
 ls -l production
-#-5--------------------------------------------
+#-06--------------------------------------------
 puppet agent -t
 netstat -tulpn     # show ports
 lsof -i TCP -P
-#-6--------------------------------------------
+#-07--------------------------------------------
 # run ngrok and paste the URL into the repo's webhook
 /root/ngrok http 8088
 #    http://puppet:puppet@NGROK_URL/payload
@@ -70,7 +70,7 @@ cd /etc/puppetlabs/code/environments/production
 ## Setup Local workstation
 
 ```
-#-7--------------------------------------------
+#-08--------------------------------------------
 # install rbenv either with brew or ports
 # add 'eval "$(rbenv init -)"' to ~/.bash_profile
 curl -fsSL https://github.com/rbenv/rbenv-installer/raw/master/bin/rbenv-doctor | bash
@@ -97,7 +97,7 @@ git commit common.yaml -m 'added encrypted secret_password'
 ## Setup webhook on github
 
 ```
-#-8--------------------------------------------
+#-09--------------------------------------------
 # under github's repo for puppet-ess-control-repo settings click on Webhooks
 # add a webhook with URL http://puppet:puppet@NGROK_URL/payload
 ```
@@ -105,7 +105,7 @@ git commit common.yaml -m 'added encrypted secret_password'
 ## Setup rspec Testing on local workstation
 
 ```
-#-9--------------------------------------------
+#-10--------------------------------------------
 gem install puppet-lint
 gem install rspec-puppet puppetlabs_spec_helper rspec-puppet-facts
 # download and install https://pm.puppet.com/cgi-bin/pdk_download.cgi?dist=osx&rel=10.13&arch=x86_64&ver=latest
@@ -125,7 +125,7 @@ rake spec
 rake lint
 rake syntax
 ```
-
+#-11--------------------------------------------
 ## ELK Travis-CI testing (on local workstation in control-repo)
 
 - create new elk module on local workstation
@@ -146,6 +146,7 @@ pdk new class elk; rspec
 
 - create separate github repo puppet-ess-control-repo-elk.git
 ```
+#-12--------------------------------------------
 git init
 git add .
 git commit -a -m "init elk module"
@@ -155,6 +156,7 @@ git push --set-upstream origin master
 
 - create subtree of elk module
 ```
+#-13--------------------------------------------
 # r10k doesn't use submodules; instead subtrees
 # https://codewinsarguments.co/2016/05/01/git-submodules-vs-git-subtrees/
 # https://github.com/git/git/blob/master/contrib/subtree/git-subtree.txt
@@ -175,6 +177,7 @@ rm site/elk.git
 **this is currently broken--beaker runs the virtual machine but it can't connect**
 
 ```
+#-14--------------------------------------------
 #
 # this is currently broken--beaker runs the virtual machine but it can't connect
 #
@@ -197,6 +200,7 @@ bundle exec rake beaker
 
 - add elastic-kibana puppetfile dependencies
 ```
+#-15--------------------------------------------
 #add site/elk/manifests/init.pp
 #add site/elk/files/filebeats.conf
 git subtree push -P site/elk git@github.com:mvilain/puppet-ess-control-repo-elk.git master
@@ -205,12 +209,14 @@ git subtree push -P site/elk git@github.com:mvilain/puppet-ess-control-repo-elk.
 ## ELK vagrant instance
 
 ```
+#-16a--------------------------------------------
 vagrant ssh elk
 sudo puppet agent -t # generate a key to sign
 exit
 ```
 - fix puppet type dependencies on puppet master
 ```
+#-16b--------------------------------------------
 vagrant ssh puppet
 sudo puppetserver ca sign --all
 sudo r10k deploy environment -pv
@@ -221,6 +227,7 @@ puppet generate types --environment production
 
 - re-apply puppet configuration on elk instance
 ```
+#-17--------------------------------------------
 sudo puppet agent -t
 
 # requires 2nd run to pick up filebeat dependencies
