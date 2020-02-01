@@ -7,7 +7,7 @@ class profile::puppetboard {
   # puppetdb needs postgresql server installed; doesn't install package in right order
   # but it's ordering is wrong when called inside puppetboard
   # which means you can't create a puppetboard server with a puppetdb on another host
-  package {'postgresql': ensure  => present, }
+  package {'postgresql': ensure  => present, }->
 
   # https://github.com/voxpupuli/puppetboard/issues/527
   # module puppetboard 1.1 requires python 3.[678]
@@ -22,7 +22,7 @@ class profile::puppetboard {
   # to examine puppet's heira lookup
   # OR install gem heira_explain
   # to display lookups in heira
-  -> class { 'puppetboard': 
+  class { 'puppetboard': 
     manage_git        => true,
     manage_virtualenv => true,
   }
