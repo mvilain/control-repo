@@ -27,6 +27,7 @@ unzip /vagrant/ngrok-stable-linux-amd64.zip
 #-02--------------------------------------------
 puppet module install puppet/r10k --modulepath=/etc/puppetlabs/code/modules/
 puppet apply -e 'class {"r10k": remote => "https://github.com/mvilain/puppet-ess-control-repo.git"}' --modulepath=/etc/puppetlabs/code/modules
+
 #-03-------------------------------------------
 echo ""                                >>/etc/puppetlabs/puppet/puppet.conf
 echo "[main]"                          >>/etc/puppetlabs/puppet/puppet.conf

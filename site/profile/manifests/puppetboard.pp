@@ -21,6 +21,10 @@ class profile::puppetboard {
     ensure     => present,
     virtualenv => '/srv/puppetboard/virtenv-puppetboard',
   }
+  # this really didn't help, sooo, installing 2to3 conversion tool
+  -> package{'2to3':
+    ensure => present,
+  }
   
   # this should be decleared by python module but it's not created in the right order
   # which means you have to run puppet apply twice
@@ -46,25 +50,28 @@ class profile::puppetboard {
   # to examine puppet's heira lookup
   # OR install gem heira_explain
   # to display lookups in heira
+  #
+  # note: the tag used here is only viewable if you git clone the repo. 
+  # The documentation doesn't match the valid values for this option.
   -> class { 'puppetboard': 
     manage_git        => true,
     manage_virtualenv => true,
-    revision          => 'v1.0.0',
+    #revision          => 'v1.0.0',
   }
   # fix issues with modules not found
   # https://github.com/voxpupuli/puppet-puppetboard/issues/128
-#  -> python::pip { 'Flask':
-#    ensure     => present,
-#    virtualenv => '/srv/puppetboard/virtenv-puppetboard',
-#  }
-#  -> python::pip { 'Flask-WTF':
-#    ensure     => present,
-#    virtualenv => '/srv/puppetboard/virtenv-puppetboard',
-#  }
-#  -> python::pip { 'WTForms':
-#    ensure     => present,
-#    virtualenv => '/srv/puppetboard/virtenv-puppetboard',
-#  }
+  -> python::pip { 'Flask':
+    ensure     => present,
+    virtualenv => '/srv/puppetboard/virtenv-puppetboard',
+  }
+  -> python::pip { 'Flask-WTF':
+    ensure     => present,
+    virtualenv => '/srv/puppetboard/virtenv-puppetboard',
+  }
+  -> python::pip { 'WTForms':
+    ensure     => present,
+    virtualenv => '/srv/puppetboard/virtenv-puppetboard',
+  }
 
   # Access Puppetboard through localhost:8000
   class { 'puppetboard::apache::vhost':
