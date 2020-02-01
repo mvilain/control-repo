@@ -2,12 +2,14 @@ class profile::puppetboard {
 
   # independent but needed to serve puppetboard web site
   class { 'apache': }
-  #class { 'apache::mod::wsgi': } #installs for system python (e.g. python2)
+  #installs for system python (e.g. python2)
+  class { 'apache::mod::wsgi': }
 
   # puppetdb needs postgresql server installed; doesn't install package in right order
   # but it's ordering is wrong when called inside puppetboard
   # which means you can't create a puppetboard server with a puppetdb on another host
   package {'postgresql': ensure  => present, }->
+  package{'libapache2-mod-wsgi-py3': ensure => present, } ->
 
   # https://github.com/voxpupuli/puppetboard/issues/527
   # module puppetboard 1.1 requires python 3.[678]
@@ -38,6 +40,7 @@ class profile::puppetboard {
     virtualenv => '/srv/puppetboard/virtenv-puppetboard',
   }
   # also reinstall wsgi module for python3
+  # libapache2-mod-wsgi-py3
   -> python::pip { 'mod_wsgi':
     virtualenv => '/srv/puppetboard/virtenv-puppetboard',
   }
