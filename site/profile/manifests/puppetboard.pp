@@ -44,6 +44,7 @@ class profile::puppetboard {
   -> class { 'puppetboard': 
     manage_git        => true,
     manage_virtualenv => true,
+    revision          => '1.0.0',
   }
   # fix issues with modules not found
   # https://github.com/voxpupuli/puppet-puppetboard/issues/128

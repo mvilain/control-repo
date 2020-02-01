@@ -16,7 +16,7 @@ cd puppet-ess
 # it uses public network instead of private
 # ngrok won't work in private network
 vagrant up
-#--------------------------------------------
+#-1--------------------------------------------
 vagrant ssh puppet
 sudo -s
 #apt-get update
@@ -24,7 +24,7 @@ sudo -s
 cd /root
 tar -xvzf /vagrant/ssh.tar.gz
 unzip /vagrant/ngrok-stable-linux-amd64.zip
-#--------------------------------------------
+#-2--------------------------------------------
 puppet module install puppet/r10k --modulepath=/etc/puppetlabs/code/modules/
 puppet apply -e 'class {"r10k": remote => "https://github.com/mvilain/puppet-ess-control-repo.git"}' --modulepath=/etc/puppetlabs/code/modules
 #--------------------------------------------
@@ -33,7 +33,7 @@ echo "[main]"                          >>/etc/puppetlabs/puppet/puppet.conf
 echo "reports = store, puppetdb, http" >>/etc/puppetlabs/puppet/puppet.conf
 echo ""                                >>/etc/puppetlabs/puppet/puppet.conf
 tail /etc/puppetlabs/puppet/puppet.conf
-#--------------------------------------------
+#-3--------------------------------------------
 ## ensure highline is installed on workstation in rbenv
 gem install hiera-eyaml
 puppetserver gem install hiera-eyaml
@@ -47,16 +47,16 @@ chmod -R 0500 /etc/puppetlabs/puppet/eyaml
 chmod -R 0400 /etc/puppetlabs/puppet/eyaml/*.pem
 ls -lah /etc/puppetlabs/puppet/eyaml
 #rm -f /vagrant/p*.pkcs7.pem && cp -av eyaml/*.pem /vagrant/
-#--------------------------------------------
+#-4--------------------------------------------
 cd /etc/puppetlabs/code/environments
 ls -l production
 r10k deploy environment -pv
 ls -l production
-#--------------------------------------------
+#-5--------------------------------------------
 puppet agent -t
 netstat -tulpn     # show ports
 lsof -i TCP -P
-#--------------------------------------------
+#-6--------------------------------------------
 # run ngrok and paste the URL into the repo's webhook
 /root/ngrok http 8088
 #    http://puppet:puppet@NGROK_URL/payload
@@ -70,6 +70,7 @@ cd /etc/puppetlabs/code/environments/production
 ## Setup Local workstation
 
 ```
+#-7--------------------------------------------
 # install rbenv either with brew or ports
 # add 'eval "$(rbenv init -)"' to ~/.bash_profile
 curl -fsSL https://github.com/rbenv/rbenv-installer/raw/master/bin/rbenv-doctor | bash
@@ -96,6 +97,7 @@ git commit common.yaml -m 'added encrypted secret_password'
 ## Setup webhook on github
 
 ```
+#-8--------------------------------------------
 # under github's repo for puppet-ess-control-repo settings click on Webhooks
 # add a webhook with URL http://puppet:puppet@NGROK_URL/payload
 ```
@@ -103,6 +105,7 @@ git commit common.yaml -m 'added encrypted secret_password'
 ## Setup rspec Testing on local workstation
 
 ```
+#-9--------------------------------------------
 gem install puppet-lint
 gem install rspec-puppet puppetlabs_spec_helper rspec-puppet-facts
 # download and install https://pm.puppet.com/cgi-bin/pdk_download.cgi?dist=osx&rel=10.13&arch=x86_64&ver=latest
@@ -169,7 +172,7 @@ rm site/elk.git
 
 ## ELK Beaker testing (on local workstation in puppet-ess-control-repo)
 
-*this is currently broken--beaker runs the virtual machine but it can't connect*
+**this is currently broken--beaker runs the virtual machine but it can't connect**
 
 ```
 #
@@ -228,9 +231,11 @@ sleep 60; lsof -i TCP -P   # java takes time to startup
 
 ## REPORTING (puppetboard on puppet server)
 
+
+**this is currently broken--puppetboard has parts that use python2 (wsgi)**
+
 ```
 #
-# currently broken using most current release
 # https://github.com/voxpupuli/puppetboard/issues/527
 #
 puppet config print reportdir --section main
