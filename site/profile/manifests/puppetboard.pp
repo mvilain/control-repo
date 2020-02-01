@@ -22,11 +22,12 @@ class profile::puppetboard {
     virtualenv => '/srv/puppetboard/virtenv-puppetboard',
   }
   
-  file{'/srv/puppetboard/virtenv-puppetboard':
-    ensure  => directory,
-  }
+  # this should be decleared by python module but it's not created in the right order
+  # which means you have to run puppet apply twice
+#  file{'/srv/puppetboard/virtenv-puppetboard':
+#    ensure  => directory,
+#  }
 
-  
   # puppetdb needs postgresql server installed
   # but it's ordering is wrong when called inside puppetboard
   # which means you can't create a puppetboard server with a puppetdb on another host
@@ -49,7 +50,6 @@ class profile::puppetboard {
     manage_git        => true,
     manage_virtualenv => true,
     revision          => '1.0.0',
-    require           => File['/srv/puppetboard/virtenv-puppetboard'],
   }
   # fix issues with modules not found
   # https://github.com/voxpupuli/puppet-puppetboard/issues/128
