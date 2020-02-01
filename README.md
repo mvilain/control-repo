@@ -6,12 +6,17 @@ https://www.linkedin.com/learning/puppet-essential-training
 ## Setup puppet master in virtualbox puppet instance
 
 - create puppet master and elk Vagrant instances
+- install and configure r10k on puppet master instance
+- install & configure eyaml on puppetserver, puppet VM, and local workstation
+- deploy control-repo code and use ngrok to service webhook
+
 ```
 cd puppet-ess
 # clone this git repo and use Vagrantfile instead of example code 
 # it uses public network instead of private
 # ngrok won't work in private network
 vagrant up
+#--------------------------------------------
 vagrant ssh puppet
 sudo -s
 #apt-get update
@@ -19,21 +24,16 @@ sudo -s
 cd /root
 tar -xvzf /vagrant/ssh.tar.gz
 unzip /vagrant/ngrok-stable-linux-amd64.zip
-```
-- install and configure r10k on puppet master instance
-```
+#--------------------------------------------
 puppet module install puppet/r10k --modulepath=/etc/puppetlabs/code/modules/
 puppet apply -e 'class {"r10k": remote => "https://github.com/mvilain/puppet-ess-control-repo.git"}' --modulepath=/etc/puppetlabs/code/modules
-
+#--------------------------------------------
 echo ""                                >>/etc/puppetlabs/puppet/puppet.conf
 echo "[main]"                          >>/etc/puppetlabs/puppet/puppet.conf
 echo "reports = store, puppetdb, http" >>/etc/puppetlabs/puppet/puppet.conf
 echo ""                                >>/etc/puppetlabs/puppet/puppet.conf
 tail /etc/puppetlabs/puppet/puppet.conf
-```
-
-- install & configure eyaml on puppetserver, puppet VM, and local workstation
-```
+#--------------------------------------------
 ## ensure highline is installed on workstation in rbenv
 gem install hiera-eyaml
 puppetserver gem install hiera-eyaml
@@ -47,19 +47,16 @@ chmod -R 0500 /etc/puppetlabs/puppet/eyaml
 chmod -R 0400 /etc/puppetlabs/puppet/eyaml/*.pem
 ls -lah /etc/puppetlabs/puppet/eyaml
 #rm -f /vagrant/p*.pkcs7.pem && cp -av eyaml/*.pem /vagrant/
-```
-
-- deploy control-repo code and use ngrok to service webhook
-```
+#--------------------------------------------
 cd /etc/puppetlabs/code/environments
 ls -l production
 r10k deploy environment -pv
 ls -l production
-
+#--------------------------------------------
 puppet agent -t
 netstat -tulpn     # show ports
 lsof -i TCP -P
-
+#--------------------------------------------
 # run ngrok and paste the URL into the repo's webhook
 /root/ngrok http 8088
 #    http://puppet:puppet@NGROK_URL/payload
