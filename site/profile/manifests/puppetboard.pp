@@ -2,12 +2,12 @@ class profile::puppetboard {
 
   # independent but needed to serve puppetboard web site
   class { 'apache': }
-  #class { 'apache::mod::wsgi': }
+  #class { 'apache::mod::wsgi': } #installs for system python (e.g. python2)
 
   # puppetdb needs postgresql server installed; doesn't install package in right order
   # but it's ordering is wrong when called inside puppetboard
   # which means you can't create a puppetboard server with a puppetdb on another host
-  package {'postgres':
+  package {'postgres-all':
     ensure  => present,
   }
 
