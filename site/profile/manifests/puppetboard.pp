@@ -4,9 +4,18 @@ class profile::puppetboard {
   class { 'apache': }
   #installs for system python (e.g. python2)
   class { 'apache::mod::wsgi': }
-  -> package{'libapache2-mod-wsgi-py3': ensure => present, }
-  -> package{'apache2-dev': ensure => present, }
-  # also reinstall wsgi module for python3
+#  -> package{'libapache2-mod-wsgi-py3': 
+#    ensure => present, 
+#  }
+  # https://stackoverflow.com/questions/45364577/bin-sh-apxs-command-not-found-when-installing-mod-wsgi
+  -> package{'apache2-dev': 
+    ensure => present, 
+  }
+  # https://www.reddit.com/r/learnpython/comments/5mba64/why_cant_i_pip_this_library_ubuntu/
+  -> package{'python3-dev': 
+    ensure => present, 
+  }
+  # also reinstall wsgi module for python3 (apache2-dev+python3-dev required)
   # libapache2-mod-wsgi-py3
   -> python::pip { 'mod_wsgi':
     ensure     => present,
@@ -14,7 +23,7 @@ class profile::puppetboard {
   }
 
   
-  # puppetdb needs postgresql server installed; doesn't install package in right order
+  # puppetdb needs postgresql server installed
   # but it's ordering is wrong when called inside puppetboard
   # which means you can't create a puppetboard server with a puppetdb on another host
   package {'postgresql': ensure  => present, }
