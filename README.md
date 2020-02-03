@@ -316,4 +316,8 @@ systemctl restart puppetserver # java...it will take a while
 - ensure elk server is up and running
 - run puppet on master to add puppetserver logs to ELK stack
 
+## TYPES AND PROVIDERS
 
+```
+gem install puppet -v5.5
+```
